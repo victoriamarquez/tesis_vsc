@@ -22,7 +22,7 @@ def align_images(images_data, verbosity=True):
 
     for folder in unique_folders:
         command = [
-            'python3', '/home/vicky/Documents/tesis/stylegan2encoder/align_images.py',
+            'python3', '/home/vicky/Documents/tesis/stylegan2encoder/align_images.py', # TODO: PUEDO CAMBIAR ESTO POR EL MNT?
             folder,  # Carpeta actual a procesar
             aligned_image_path,
         ]

@@ -30,9 +30,9 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 images_data = create_image_dir(base_dir, verbosity)
 
 # TODO: Hacer andar el docker que proyecta
-#align_images(images_data[0:2], verbosity)
-#df = batch_processing(images_data[0:2], verbosity)
-#df = load_dataframe()
+align_images(images_data[0:2], verbosity)
+df = batch_processing(images_data[0:2], verbosity)
+# df = load_dataframe()
 
 # TODO: A partir de acá sigo como si ya tuviera las imágenes proyectadas, porque sino no llego a ningún lado.
 df = pd.read_csv(f'/mnt/discoAmpliado/viky/dataframes/processed_dataframe_combined_fallback.csv')
