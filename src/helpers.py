@@ -10,7 +10,7 @@ from sklearn.preprocessing import normalize
 
 # toma un dataframe y un índice y te da el npz correspondiente
 def getNPZ(df, index):
-    filename = df['projected_file'][index]
+    # filename = df['projected_file'][index]
     # TODO: volver a load(filename)['w']
     fileName = df['name'][index]
     filenameFinal = f'/mnt/discoAmpliado/viky/images/results_BU_3DFE/{fileName}/projected_w.npz'
