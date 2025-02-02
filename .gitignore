@@ -12,4 +12,4 @@ stylegan2-ada-pytorch/.cache/dnnlib/downloads/2366a0cffcb890fdb0ee0a193f4e0440_h
 
 src/__pycache__/*
 *.png
-*.rar
+*.rarstylegan2-ada-pytorch/.cache/
