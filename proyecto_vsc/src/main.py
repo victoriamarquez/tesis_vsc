@@ -66,18 +66,18 @@ for emocion in emociones:
 optional_print('PCA and Linear Regression completed successfully.', verbosity)
 
 # Normalizar PCA
-emociones_total_PCA_normalizado = normalizar_emociones(emociones_total_PCA)
+##emociones_total_PCA_normalizado = normalizar_emociones(emociones_total_PCA)
 
 # Normalizar LR
-emociones_total_LR_normalizado = normalizar_emociones(emociones_total_LR)
-optional_print('PCA and Linear Regression results normalized successfully.', verbosity)
+##emociones_total_LR_normalizado = normalizar_emociones(emociones_total_LR)
+##optional_print('PCA and Linear Regression results normalized successfully.', verbosity)
 
 # Bootstrapping y similitud coseno (func void solo printea)
 
 #bootstrapping_todas_emociones(emociones_total_PCA_normalizado, emociones_total_LR_normalizado, emociones, 1000, False)
 
-optimos_LR = umbrales_optimos(emociones_total_LR, 1000, verbosity)
-optimos_LR.to_csv('umbrales_optimos_LR.csv', sep='\t')
+##optimos_LR = umbrales_optimos(emociones_total_LR, 1000, verbosity)
+##optimos_LR.to_csv('umbrales_optimos_LR.csv', sep='\t')
 
 # TODO: Los outputs de umbrales_optimos son medio raros?
 # Idea: debuggear umbrales_optimos para entender si tiene sentido lo que está haciendo

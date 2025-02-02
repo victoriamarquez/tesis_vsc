@@ -1,0 +1,3 @@
+gender,id,exp,exp_level,race,attribute,ext,name,raw_image_folder,file,projected_npz,projected_file,idUnique
+F,30,FE,2,BL,F2D,bmp,F0030_FE02BL_F2D,/mnt/discoAmpliado/viky/BU_3DFE/F0030,F0030_FE02BL_F2D.bmp,N,N,0030F
+F,30,AN,2,BL,F2D,bmp,F0030_AN02BL_F2D,/mnt/discoAmpliado/viky/BU_3DFE/F0030,F0030_AN02BL_F2D.bmp,N,N,0030F
