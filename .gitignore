@@ -8,8 +8,15 @@ __pycache__
 
 
 stylegan2-ada-pytorch/.cache/dnnlib/downloads/2366a0cffcb890fdb0ee0a193f4e0440_https___nvlabs-fi-cdn.nvidia.com_stylegan2-ada-pytorch_pretrained_ffhq.pkl
- stylegan2-ada-pytorch/.cache/dnnlib/downloads/5982b9427714baaab6e0a48ef3b1dbfd_https___nvlabs-fi-cdn.nvidia.com_stylegan2-ada-pytorch_pretrained_metrics_vgg16.pt
+stylegan2-ada-pytorch/.cache/dnnlib/downloads/5982b9427714baaab6e0a48ef3b1dbfd_https___nvlabs-fi-cdn.nvidia.com_stylegan2-ada-pytorch_pretrained_metrics_vgg16.pt
+
+stylegan2-ada-pytorch_MODIFIED/.cache/dnnlib/downloads/2366a0cffcb890fdb0ee0a193f4e0440_https___nvlabs-fi-cdn.nvidia.com_stylegan2-ada-pytorch_pretrained_ffhq.pkl
+stylegan2-ada-pytorch_MODIFIED/.cache/dnnlib/downloads/5982b9427714baaab6e0a48ef3b1dbfd_https___nvlabs-fi-cdn.nvidia.com_stylegan2-ada-pytorch_pretrained_metrics_vgg16.pt
+
 
 src/__pycache__/*
 *.png
-*.rarstylegan2-ada-pytorch/.cache/
+*.rar
+stylegan2-ada-pytorch/
+stylegan2-ada-pytorch_MODIFIED/
+.cache/

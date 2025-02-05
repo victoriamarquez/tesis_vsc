@@ -32,6 +32,7 @@ images_data = create_image_dir(base_dir, verbosity)
 
 # TODO: Hacer andar el docker que proyecta
 align_images(images_data[0:2], verbosity)
+print("Align OK.")
 df = batch_processing(images_data[0:2], verbosity)
 
 print(df)
