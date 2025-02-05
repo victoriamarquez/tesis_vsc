@@ -30,8 +30,8 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 images_data = create_image_dir(base_dir, verbosity)
 
 # TODO: Hacer andar el docker que proyecta
-align_images(images_data[0:2], verbosity)
-df = batch_processing(images_data[0:2], verbosity)
+##align_images(images_data[0:2], verbosity)
+##df = batch_processing(images_data[0:2], verbosity)
 # df = load_dataframe()
 
 # TODO: A partir de acá sigo como si ya tuviera las imágenes proyectadas, porque sino no llego a ningún lado.
@@ -44,7 +44,7 @@ emociones.remove("NE")
 
 # Crear lista de IDs y eliminar IDs no deseados
 ids = df.idUnique.unique().tolist()
-ids_malos = ["39M", "17M", "22M", "14M", "2F"] # TODO: Sacar esto cuadno pueda arreglar el docker
+ids_malos = ["39M", "17M", "22M", "14M", "2F"] # TODO: Sacar esto cuando pueda arreglar el docker
 for id_malo in ids_malos:
     ids.remove(id_malo)
 
@@ -60,8 +60,8 @@ for emocion in emociones:
         emociones_total_LR.at[idUnique, emocion] = direccion_emocion.flatten()
         
         # PCA
-        direccion_emocion = executePCA(df, idUnique, emocion, False)
-        emociones_total_PCA.at[idUnique, emocion] = direccion_emocion
+        ##direccion_emocion = executePCA(df, idUnique, emocion, False)
+        ##emociones_total_PCA.at[idUnique, emocion] = direccion_emocion
         
 optional_print('PCA and Linear Regression completed successfully.', verbosity)
 
