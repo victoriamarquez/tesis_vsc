@@ -19,6 +19,7 @@ from image_processing import *
 from pca import *
 from lr import *
 from bootstrapping import *
+import subprocess
 
 
 gc.collect()
@@ -31,8 +32,15 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 images_data = create_image_dir(base_dir, verbosity)
 
 # TODO: Hacer andar el docker que proyecta
-align_images(images_data[0:2], verbosity)
+align_images(images_data[0:2], verbosity) # Esto sí funciona
 print("Align OK.")
-df = batch_processing(images_data[0:2], verbosity)
+##df = batch_processing(images_data[0:2], verbosity)
 
-print(df)
+# Ruta al script que deseas ejecutar
+script_path = "/mnt/discoAmpliado/viky/projectar_todo.py"
+
+# Llamar al script projectar_todo.py
+subprocess.run(['python', script_path], check=True)
+
+
+##print(df)
