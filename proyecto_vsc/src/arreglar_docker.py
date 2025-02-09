@@ -35,7 +35,7 @@ df.to_csv("imagenes.csv", index=False)
 
 #print(getNPZ("F0030_AN01BL_F2D"))
 
-align_all_images(images_data[0:1], verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
+align_all_images(images_data, verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
 
 print("_________FINALIZADO_____________")
 process_all_images(1000, verbose)
