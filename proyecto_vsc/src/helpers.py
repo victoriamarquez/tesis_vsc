@@ -9,12 +9,9 @@ from sklearn.preprocessing import normalize
 # Funciones Auxiliares
 
 # toma un dataframe y un índice y te da el npz correspondiente
-def getNPZ(df, index):
-    # filename = df['projected_file'][index]
-    # TODO: volver a load(filename)['w']
-    fileName = df['name'][index]
-    filenameFinal = f'/mnt/discoAmpliado/viky/images/results_BU_3DFE/{fileName}/projected_w.npz'
-    return load(filenameFinal)['w']
+def getNPZ(name):
+    filename = f'/mnt/discoAmpliado/viky/images/processed_images/{name}_01_projected_w.npz'
+    return load(filename)['w']
 
 def optional_print(text, verbosity=True):
     if verbosity:

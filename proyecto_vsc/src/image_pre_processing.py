@@ -2,7 +2,7 @@ import os
 import re
 from helpers import *
 
-def create_image_dir(base_dir, verbosity=True):
+def create_image_dict(base_dir, verbosity=True):
     if not os.path.exists(base_dir):
         optional_print("La ruta no existe:" + base_dir, verbosity)
     else:
@@ -20,10 +20,8 @@ def create_image_dir(base_dir, verbosity=True):
             if match and match.group('ext') == 'bmp':
                 image_data = match.groupdict()
                 image_data['name'] = os.path.splitext(file)[0]
-                image_data['raw_image_folder'] = root
-                image_data['file'] = file
-                image_data['projected_npz'] = "N"
-                image_data['projected_file'] = "N"
+                #image_data['raw_image_folder'] = root
+                #image_data['file'] = file
                 image_data['idUnique'] = image_data['id'] + image_data['gender']
                 images_data.append(image_data)
     return images_data

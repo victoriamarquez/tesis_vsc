@@ -24,23 +24,28 @@ import subprocess
 
 gc.collect()
 torch.cuda.empty_cache()
-verbosity = True
+verbose = True 
 
 # Define the base directory
 base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 
-images_data = create_image_dir(base_dir, verbosity)
+images_data = create_image_dict(base_dir, verbose)
+df = pd.DataFrame(images_data)
+df.to_csv("imagenes.csv", index=False)
+print(df.head())
+#print(getNPZ("F0030_AN01BL_F2D"))
 
-# TODO: Hacer andar el docker que proyecta
-align_images(images_data[0:2], verbosity) # Esto sí funciona
-print("Align OK.")
-##df = batch_processing(images_data[0:2], verbosity)
+align_all_images(images_data[0:1], verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
 
-# Ruta al script que deseas ejecutar
-script_path = "/mnt/discoAmpliado/viky/projectar_todo.py"
+print("_________ALINEADO_____________")
+#process_all_images(1000, verbose)
 
-# Llamar al script projectar_todo.py
-subprocess.run(['python', script_path], check=True)
+#generate_all_images(verbose)
 
 
-##print(df)
+
+
+
+#### Para trabajar con una sola imagen
+#process_one_image("F0030_AN01BL_F2D", 1000, verbose)
+#generate_one_image("F0030_AN01BL_F2D", verbose)

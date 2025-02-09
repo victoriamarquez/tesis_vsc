@@ -204,7 +204,7 @@ def run_projection(
     ##PIL.Image.fromarray(synth_image, 'RGB').save(f'{outdir}/proj.png')
     base_name = os.path.basename(target_fname).split('.')[0]  # Obtiene el nombre del archivo sin la extensión
     output_name = f"{base_name}_projected_w.npz"
-    np.savez(os.path.join(outdir, output_name), w=projected_w_steps[-1].cpu().numpy())
+    np.savez(os.path.join(outdir, output_name), w=projected_w.unsqueeze(0).cpu().numpy())
     ##np.savez(f'{outdir}/projected_w.npz', w=projected_w.unsqueeze(0).cpu().numpy())
 
 #----------------------------------------------------------------------------
