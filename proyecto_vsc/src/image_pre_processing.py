@@ -20,7 +20,7 @@ def create_image_dict(base_dir, verbosity=True):
             if match and match.group('ext') == 'bmp':
                 image_data = match.groupdict()
                 image_data['name'] = os.path.splitext(file)[0]
-                #image_data['raw_image_folder'] = root
+                image_data['raw_image_folder'] = root
                 #image_data['file'] = file
                 image_data['idUnique'] = image_data['id'] + image_data['gender']
                 images_data.append(image_data)

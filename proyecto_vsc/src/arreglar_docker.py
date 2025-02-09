@@ -32,15 +32,15 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 images_data = create_image_dict(base_dir, verbose)
 df = pd.DataFrame(images_data)
 df.to_csv("imagenes.csv", index=False)
-print(df.head())
+
 #print(getNPZ("F0030_AN01BL_F2D"))
 
 align_all_images(images_data[0:1], verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
 
-print("_________ALINEADO_____________")
-#process_all_images(1000, verbose)
+print("_________FINALIZADO_____________")
+process_all_images(1000, verbose)
 
-#generate_all_images(verbose)
+generate_all_images(verbose)
 
 
 
