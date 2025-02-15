@@ -31,16 +31,43 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 
 images_data = create_image_dict(base_dir, verbose)
 df = pd.DataFrame(images_data)
-df.to_csv("imagenes.csv", index=False)
+##df = pd.DataFrame.from_dict(images_data, orient='index')
+print(df.size)
+df.to_csv("dataframe.csv", index=False)
 
 #print(getNPZ("F0030_AN01BL_F2D"))
 
-align_all_images(images_data, verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
+##print("_____________[ALINEANDO]_____________")
 
-print("_________FINALIZADO_____________")
-process_all_images(1000, verbose)
+##align_all_images(images_data, verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
 
-generate_all_images(verbose)
+##print("_____________[ALINEADO]_____________")
+##print("_____________[PROCESANDO]_____________")
+
+##process_all_images(1000, verbose)
+
+##print("_____________[PROCESADO]_____________")
+##print("_____________[GENERANDO]_____________")
+
+##generate_all_images(verbose)
+
+##print("_____________[GENERADO]_____________")
+##print("_____________[FINALIZADO]_____________")
+
+
+##print(f"_____________[ALINEADAS CHECK] {check_alineadas(images_data, False)}_____________")
+##print(f"_____________[NPZ CHECK] {check_npz(images_data, False)[0]}_____________")
+
+
+
+
+
+
+
+# Puedo obligarlo a funcionar loopeando esto?
+#df_reproceso = df[df['name'].isin(check_npz(images_data, False)[1])]
+#process_all_images_in_df(df_reproceso, 1000, True)
+
 
 
 
