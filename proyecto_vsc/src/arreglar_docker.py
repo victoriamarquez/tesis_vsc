@@ -35,8 +35,6 @@ df = pd.DataFrame(images_data)
 print(df.size)
 df.to_csv("dataframe.csv", index=False)
 
-#print(getNPZ("F0030_AN01BL_F2D"))
-
 ##print("_____________[ALINEANDO]_____________")
 
 ##align_all_images(images_data, verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
