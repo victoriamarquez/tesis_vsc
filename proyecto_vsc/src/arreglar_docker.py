@@ -32,7 +32,6 @@ base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 images_data = create_image_dict(base_dir, verbose)
 df = pd.DataFrame(images_data)
 ##df = pd.DataFrame.from_dict(images_data, orient='index')
-print(df.size)
 df.to_csv("dataframe.csv", index=False)
 
 ##print("_____________[ALINEANDO]_____________")
