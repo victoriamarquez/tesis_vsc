@@ -44,11 +44,11 @@ df.to_csv("dataframe.csv", index=False)
 ##process_all_images(1000, verbose)
 
 ##print("_____________[PROCESADO]_____________")
-##print("_____________[GENERANDO]_____________")
+print("_____________[GENERANDO]_____________")
 
-##generate_all_images(verbose)
+generate_all_images(verbose)
 
-##print("_____________[GENERADO]_____________")
+print("_____________[GENERADO]_____________")
 ##print("_____________[FINALIZADO]_____________")
 
 
