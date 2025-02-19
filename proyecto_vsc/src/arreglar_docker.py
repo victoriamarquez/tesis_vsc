@@ -24,23 +24,52 @@ import subprocess
 
 gc.collect()
 torch.cuda.empty_cache()
-verbosity = True
+verbose = True 
 
 # Define the base directory
 base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 
-images_data = create_image_dir(base_dir, verbosity)
+images_data = create_image_dict(base_dir, verbose)
+df = pd.DataFrame(images_data)
+##df = pd.DataFrame.from_dict(images_data, orient='index')
+df.to_csv("dataframe.csv", index=False)
 
-# TODO: Hacer andar el docker que proyecta
-align_images(images_data[0:2], verbosity) # Esto sí funciona
-print("Align OK.")
-##df = batch_processing(images_data[0:2], verbosity)
+##print("_____________[ALINEANDO]_____________")
 
-# Ruta al script que deseas ejecutar
-script_path = "/mnt/discoAmpliado/viky/projectar_todo.py"
+##align_all_images(images_data, verbose) # Es necesario que tome los valores de images_data? No podría hacer "todas"?
 
-# Llamar al script projectar_todo.py
-subprocess.run(['python', script_path], check=True)
+##print("_____________[ALINEADO]_____________")
+##print("_____________[PROCESANDO]_____________")
+
+##process_all_images(1000, verbose)
+
+##print("_____________[PROCESADO]_____________")
+##print("_____________[GENERANDO]_____________")
+
+##generate_all_images(verbose)
+
+##print("_____________[GENERADO]_____________")
+##print("_____________[FINALIZADO]_____________")
 
 
-##print(df)
+##print(f"_____________[ALINEADAS CHECK] {check_alineadas(images_data, False)}_____________")
+##print(f"_____________[NPZ CHECK] {check_npz(images_data, False)[0]}_____________")
+
+
+
+
+
+
+
+# Puedo obligarlo a funcionar loopeando esto?
+#df_reproceso = df[df['name'].isin(check_npz(images_data, False)[1])]
+#process_all_images_in_df(df_reproceso, 1000, True)
+
+
+
+
+
+
+#### Para trabajar con una sola imagen
+#process_one_image("F0030_AN01BL_F2D", 1000, verbose)
+#generate_one_image("F0030_AN01BL_F2D", verbose)

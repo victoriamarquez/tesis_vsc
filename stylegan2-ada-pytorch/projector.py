@@ -117,7 +117,7 @@ def project(
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
-        logprint(f'step {step+1:>4d}/{num_steps}: dist {dist:<4.2f} loss {float(loss):<5.2f}')
+        ##logprint(f'step {step+1:>4d}/{num_steps}: dist {dist:<4.2f} loss {float(loss):<5.2f}')
 
         # Save projected W for each optimization step.
         w_out[step] = w_opt.detach()[0]
@@ -204,7 +204,7 @@ def run_projection(
     ##PIL.Image.fromarray(synth_image, 'RGB').save(f'{outdir}/proj.png')
     base_name = os.path.basename(target_fname).split('.')[0]  # Obtiene el nombre del archivo sin la extensión
     output_name = f"{base_name}_projected_w.npz"
-    np.savez(os.path.join(outdir, output_name), w=projected_w_steps[-1].cpu().numpy())
+    np.savez(os.path.join(outdir, output_name), w=projected_w.unsqueeze(0).cpu().numpy())
     ##np.savez(f'{outdir}/projected_w.npz', w=projected_w.unsqueeze(0).cpu().numpy())
 
 #----------------------------------------------------------------------------

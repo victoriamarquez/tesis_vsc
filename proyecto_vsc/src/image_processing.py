@@ -7,7 +7,7 @@ import gc
 # Methods that do the actual processing
 
 
-def align_images(images_data, verbosity=True):
+def align_all_images(images_data, verbosity=True):
     # Suppress OpenMP and TensorFlow logs
     os.environ['KMP_WARNINGS'] = '0'
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -22,7 +22,7 @@ def align_images(images_data, verbosity=True):
 
     for folder in unique_folders:
         command = [
-            'python3', '/mnt/discoAmpliado/viky/stylegan2encoder/align_images.py', # TODO: PUEDO CAMBIAR ESTO POR EL MNT?
+            'python3', '/mnt/discoAmpliado/viky/stylegan2encoder/align_images.py',
             folder,  # Carpeta actual a procesar
             aligned_image_path,
         ]
@@ -33,7 +33,7 @@ def align_images(images_data, verbosity=True):
         # Ejecutar el comando
         subprocess.run(command, check=True)
 
-    optional_print("Processing complete.", verbosity)
+    optional_print("Alineación completa para todas las imágenes.", verbosity)
 
 
 
@@ -179,4 +179,162 @@ def batch_processing(images_data, verbosity=True):
     optional_print("All specified batches processed.", verbosity)
     return combine_dataframes(total_batches, verbosity)
 
+def process_one_image(image_name, steps, verbose=False):
 
+    # Comando base para ejecutar
+    command_base = [
+        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python", "stylegan2-ada-pytorch/projector.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
+        f"--num-steps={steps}",
+        "--seed=303",
+        "--save-video=False"
+    ]
+
+    # Cambiar las rutas para que apunten a /scratch en lugar de /mnt/discoAmpliado/viky
+    target_path = f"/scratch/images/aligned_images/{image_name}_01.png"
+    outdir_path = "/scratch/images/processed_images"
+    
+    # Construir el comando completo
+    command = command_base + [
+        f"--target={target_path}",
+        f"--outdir={outdir_path}"
+    ]
+    
+    # Imprimir el comando para depuración
+    optional_print(f"Ejecutando para la imagen: {image_name}", verbose)
+    optional_print(f"Comando: {' '.join(command)}", verbose)
+
+    # Ejecutar el comando
+    subprocess.run(command, check=True)
+
+    optional_print("Proyección completa para todas las imágenes.", verbose)
+
+
+def process_all_images(steps, verbose=False):
+    # Directorio donde están las imágenes
+    aligned_images_dir = '/mnt/discoAmpliado/viky/images/aligned_images/'
+
+    # Obtener una lista de todas las imágenes en el directorio
+    imagenes = [f for f in os.listdir(aligned_images_dir) if f.endswith('.png')]
+
+    # Comando base para ejecutar
+    command_base = [
+        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python", "stylegan2-ada-pytorch/projector.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
+        f"--num-steps={steps}",
+        "--seed=303",
+        "--save-video=False"
+    ]
+
+    # Ejecutar el comando para cada imagen
+    for imagen in imagenes:
+        # Cambiar las rutas para que apunten a /scratch en lugar de /mnt/discoAmpliado/viky
+        target_path = f"/scratch/images/aligned_images/{imagen}"
+        outdir_path = "/scratch/images/processed_images"
+        
+        # Construir el comando completo
+        command = command_base + [
+            f"--target={target_path}",
+            f"--outdir={outdir_path}"
+        ]
+        
+        # Imprimir el comando para depuración
+        optional_print(f"Ejecutando para la imagen: {imagen}", verbose)
+        optional_print(f"Comando: {' '.join(command)}", verbose)
+
+        # Ejecutar el comando
+        subprocess.run(command, check=True)
+
+    optional_print("Proyección completa para todas las imágenes.", verbose)
+
+def process_all_images_in_df(df, steps, verbose=True):
+    # Directorio donde están las imágenes
+
+    # Obtener una lista de todas las imágenes en el directorio
+    ##imagenes = [f for f in os.listdir(aligned_images_dir) if f.endswith('.png')]
+
+    imagenes = [f for f in df['name']]
+
+    # Comando base para ejecutar
+    command_base = [
+        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python", "stylegan2-ada-pytorch/projector.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
+        f"--num-steps={steps}",
+        "--seed=303",
+        "--save-video=False"
+    ]
+
+    # Ejecutar el comando para cada imagen
+    for index, imagen in enumerate(imagenes):
+        optional_print(f"Iniciando proyección para imagen {index} de {len(imagenes)}", verbose)
+        # Cambiar las rutas para que apunten a /scratch en lugar de /mnt/discoAmpliado/viky
+        target_path = f"/scratch/images/aligned_images/{imagen}_01.png"
+        outdir_path = "/scratch/images/processed_images"
+        
+        # Construir el comando completo
+        command = command_base + [
+            f"--target={target_path}",
+            f"--outdir={outdir_path}"
+        ]
+        
+        # Imprimir el comando para depuración
+        optional_print(f"Ejecutando para la imagen: {imagen}", verbose)
+        optional_print(f"Comando: {' '.join(command)}", verbose)
+
+        # Ejecutar el comando
+        subprocess.run(command, check=True)
+        optional_print(f"Proyección completa para imagen {index} de {len(imagenes)}", verbose)
+
+    optional_print("Proyección completa para todas las imágenes.", verbose)
+
+
+def generate_one_image(image_name, verbose=False):
+
+    npz_path = f"/scratch/images/processed_images/{image_name}_01_projected_w.npz"
+    outdir_path = "/scratch/images/generated_images"
+    
+    command = ["/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python",
+        "stylegan2-ada-pytorch/generate.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
+        f"--outdir={outdir_path}",
+        f"--projected-w={npz_path}"
+    ]    
+    optional_print(f"Ejecutando para la imagen: {image_name}", verbose)
+    optional_print(f"Comando: {' '.join(command)}", verbose)
+    subprocess.run(command, check=True)
+
+
+def generate_all_images(verbose=False):
+
+    processed_images_dir = '/mnt/discoAmpliado/viky/images/processed_images/'
+
+    # Obtener una lista de todas las imágenes en el directorio
+    imagenes = [f for f in os.listdir(processed_images_dir) if f.endswith('.npz')]
+
+    command_base = ["/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python",
+        "stylegan2-ada-pytorch/generate.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl"
+    ]
+
+    for imagen in imagenes:
+        # Cambiar las rutas para que apunten a /scratch en lugar de /mnt/discoAmpliado/viky
+        npz_path = f"/scratch/images/processed_images/{imagen}"
+        outdir_path = "/scratch/images/generated_images"
+        # Construir el comando completo
+        command = command_base + [
+            f"--outdir={outdir_path}",
+            f"--projected-w={npz_path}"
+        ]
+
+        # Imprimir el comando para depuración
+        optional_print(f"Ejecutando para la imagen: {imagen}", verbose)
+        optional_print(f"Comando: {' '.join(command)}", verbose)
+        subprocess.run(command, check=True)
+
+    optional_print("Generación completa para todas las imágenes.", verbose)
+    

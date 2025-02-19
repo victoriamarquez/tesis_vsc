@@ -20,3 +20,5 @@ src/__pycache__/*
 stylegan2-ada-pytorch_MODIFIED/
 .cache/
 .bash_history
+.check_dict.txt.swp
+check_dict.txt.save
