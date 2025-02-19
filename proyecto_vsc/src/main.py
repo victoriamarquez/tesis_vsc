@@ -27,10 +27,10 @@ verbosity = True
 # Define the base directory
 base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 
-images_data = create_image_dir(base_dir, verbosity)
+images_data = create_image_dict(base_dir, verbosity)
 
 # TODO: Hacer andar el docker que proyecta
-##align_images(images_data[0:2], verbosity)
+align_all_images(images_data[0:2], verbosity)
 ##df = batch_processing(images_data[0:2], verbosity)
 # df = load_dataframe()
 
