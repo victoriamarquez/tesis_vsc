@@ -307,6 +307,23 @@ def generate_one_image(image_name, verbose=False):
     optional_print(f"Comando: {' '.join(command)}", verbose)
     subprocess.run(command, check=True)
 
+def generate_one_image_from_npz(npz_path, image_name):
+    
+    #npz_path = f"/scratch/images/processed_images/{image_name}_01_projected_w.npz"
+    outdir_path = "/scratch/images/generated_images"
+    
+    command = [
+        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "python",
+        "stylegan2-ada-pytorch/generate.py",
+        "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
+        f"--outdir={outdir_path}",
+        f"--projected-w={npz_path}"
+    ]    
+    print(f"Ejecutando para la imagen: {image_name}")
+    print(f"Comando: {' '.join(command)}")
+    subprocess.run(command, check=True)
+
 
 def generate_all_images(verbose=False):
 

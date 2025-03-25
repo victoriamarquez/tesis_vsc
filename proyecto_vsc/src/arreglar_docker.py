@@ -1,5 +1,4 @@
 import os
-import re
 import numpy as np
 import pandas as pd
 from IPython.display import Image 
@@ -44,19 +43,21 @@ df.to_csv("dataframe.csv", index=False)
 ##process_all_images(1000, verbose)
 
 ##print("_____________[PROCESADO]_____________")
-print("_____________[GENERANDO]_____________")
+##print("_____________[GENERANDO]_____________")
 
-generate_all_images(verbose)
+##generate_all_images(verbose)
 
-print("_____________[GENERADO]_____________")
+##print("_____________[GENERADO]_____________")
 ##print("_____________[FINALIZADO]_____________")
 
 
 ##print(f"_____________[ALINEADAS CHECK] {check_alineadas(images_data, False)}_____________")
 ##print(f"_____________[NPZ CHECK] {check_npz(images_data, False)[0]}_____________")
 
-
-
+generate_one_image_from_npz(f"images/processed_images/AA_prueba_ne.npz", "AA_prueba_ne")
+generate_one_image_from_npz(f"images/processed_images/AA_prueba_sa.npz", "AA_prueba_sa")
+#generate_one_image_from_npz(f"images/processed_images/AA_prueba_ha.npz", "AA_prueba_ha")
+generate_one_image_from_npz(f"images/processed_images/AA_prueba_di.npz", "AA_prueba_di")
 
 
 
