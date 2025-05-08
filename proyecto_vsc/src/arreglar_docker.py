@@ -54,7 +54,7 @@ df.to_csv("dataframe.csv", index=False)
 ##print(f"_____________[ALINEADAS CHECK] {check_alineadas(images_data, False)}_____________")
 ##print(f"_____________[NPZ CHECK] {check_npz(images_data, False)[0]}_____________")
 
-generate_one_image_from_npz(f"images/processed_images/AA_prueba_ne.npz", "AA_prueba_ne")
+generate_one_image_from_npz(f"images/processed_images/AA_prueba_ne.np   z", "AA_prueba_ne")
 generate_one_image_from_npz(f"images/processed_images/AA_prueba_sa.npz", "AA_prueba_sa")
 #generate_one_image_from_npz(f"images/processed_images/AA_prueba_ha.npz", "AA_prueba_ha")
 generate_one_image_from_npz(f"images/processed_images/AA_prueba_di.npz", "AA_prueba_di")
