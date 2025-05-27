@@ -88,6 +88,46 @@ def check_alineadas(images_data, verbose=False):
         return "NO se encontraron todas las imagenes alineadas."
     else:
         return "SI se encontraron todas las imagenes alineadas."
+    
+def normalize_vectors(vectors):
+    """Normaliza una lista de vectores usando norma L2.""" ## acá usar solo el 2ro de los 18 vectores
+    original_shape = vectors.shape  # Guardamos la forma original
+
+    ## vectors = vectors.reshape(vectors.shape[0], -1)  # Aplanamos a (N, D)
+    vectors = normalize(vectors, axis=1)  # Normalizamos en la dimensión correcta
+    ##return vectors.reshape(original_shape)  # Restauramos la forma original
+    return vectors
+
+def restar_vectores_neutros_y_normalizar(df):
+    """Resta el vector neutro de cada persona a sus otras imágenes"""
+    adjusted_vectors = []
+    
+    for person_id, group in df.groupby('idUnique'):
+        neutral_vector = None
+        
+        # Buscar la imagen neutra
+        for _, row in group.iterrows():
+            if row['exp'] == 'NE':
+                neutral_vector = getNPZ(row['name'])[0]
+                break
+        
+        # Si no hay imagen neutra, dejamos los vectores como están
+        if neutral_vector is None:
+            print(f"Advertencia: No se encontró imagen neutra para {person_id}")
+            adjusted_vectors.extend([getNPZ(row['name']) for _, row in group.iterrows()])
+            continue
+        
+        # Restar el vector neutro de las otras imágenes
+        for _, row in group.iterrows():
+            vector = getNPZ(row['name'])[0][0]
+            print("Vector shape", vector.shape)
+            print("Vector: ", vector)
+            adjusted_vectors.append(normalize(vector)-normalize(neutral_vector)) # Versión en la que normalizo primero
+            ##adjusted_vectors.append(normalize_vectors(vector - neutral_vector)) #Switch para normalizar o no
+            ##adjusted_vectors.append(vector - neutral_vector)
+    
+    df['adjusted_vector'] = adjusted_vectors
+    return df
 
 
 # LEGACY

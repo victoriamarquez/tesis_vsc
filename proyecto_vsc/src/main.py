@@ -1,86 +1,95 @@
-import os
-import re
+
+import gc
+
 import numpy as np
 import pandas as pd
-from IPython.display import Image 
-from numpy import load, savez
+from sklearn.linear_model import LinearRegression
 import torch
-import gc
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics.pairwise import cosine_similarity
-from statistics import mean
-from sklearn.preprocessing import normalize
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from image_pre_processing import *
-from image_processing import *
-from pca import *
-from lr import *
-from bootstrapping import *
 
-gc.collect()
-torch.cuda.empty_cache()
-verbosity = True
+from helpers import check_alineadas, check_npz, load_dataframe, optional_print, restar_vectores_neutros_y_normalizar
+from image_pre_processing import create_image_dict
+from image_processing import align_all_images, generate_all_images, process_all_images
 
-# Define the base directory
-base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
+def metodo_2(df):
+    """Método 2: Promedio y luego regresión lineal, por emoción."""
+    results = {}
+    emotions = ['DI', 'HA', 'SU', 'AN', 'SA', 'FE']
+    
+    for emotion in emotions:
+        subset_emocion = df[df['exp'] == emotion]
+        promedios_por_persona = [] ## no promediar
+        for idUnique in subset_emocion['idUnique'].unique():
+            subset_emocion_persona = subset_emocion[subset_emocion['idUnique'] == idUnique]
+            ## print(subset_emocion_persona)
+            promedios_por_persona.append(np.mean(subset_emocion_persona['adjusted_vector'], axis=0))
+        if (len(promedios_por_persona) != 100):
+            print(f'[ADVERTENCIA] El tamaño del vector de promedios por persona debería ser 100 y es {len(promedios_por_persona)}.')
 
-images_data = create_image_dict(base_dir, verbosity)
-
-# TODO: Hacer andar el docker que proyecta
-align_all_images(images_data[0:2], verbosity)
-##df = batch_processing(images_data[0:2], verbosity)
-# df = load_dataframe()
-
-# TODO: A partir de acá sigo como si ya tuviera las imágenes proyectadas, porque sino no llego a ningún lado.
-df = pd.read_csv(f'/mnt/discoAmpliado/viky/dataframes/processed_dataframe_combined_fallback.csv')
-df['idUnique'] = df['id'].astype(str) + df['gender']
-
-# Crear lista de emociones y eliminar 'NE'
-emociones = df.exp.unique().tolist()
-emociones.remove("NE")
-
-# Crear lista de IDs y eliminar IDs no deseados
-ids = df.idUnique.unique().tolist()
-ids_malos = ["39M", "17M", "22M", "14M", "2F"] # TODO: Sacar esto cuando pueda arreglar el docker
-for id_malo in ids_malos:
-    ids.remove(id_malo)
-
-# Crear un DataFrame vacío con IDs como índice y emociones como columnas
-emociones_total_LR = pd.DataFrame(index=ids, columns=emociones)
-emociones_total_PCA = pd.DataFrame(index=ids, columns=emociones)
-
-# Calcular el vector de cada emoción para cada persona
-for emocion in emociones:
-    for idUnique in ids:
-        # LR
-        direccion_emocion = linearRegression(df, idUnique, emocion, False)
-        emociones_total_LR.at[idUnique, emocion] = direccion_emocion.flatten()
         
-        # PCA
-        ##direccion_emocion = executePCA(df, idUnique, emocion, False)
-        ##emociones_total_PCA.at[idUnique, emocion] = direccion_emocion
+        X = np.arange(len(promedios_por_persona)).reshape(-1, 1) 
+        y = np.array(promedios_por_persona).reshape(np.array(promedios_por_persona).shape[0], -1)  # Aplanamos los vectores antes de la regresión
+
+        #print(f'El vector X tiene la forma {X.shape} y el vector y tiene la forma {y.shape}.')
+        #print(f'Para la emoción {emotion} el vector X es {X} y el vector y es {y}.')
+
         
-optional_print('PCA and Linear Regression completed successfully.', verbosity)
+        model = LinearRegression().fit(X, y)
+        results[emotion] = model.coef_.reshape(1, 18, 512)  # Restauramos la forma original
+            
+        ## results[emotion] = promedio_de_promedios_emocion
+    return results
 
-# Normalizar PCA
-##emociones_total_PCA_normalizado = normalizar_emociones(emociones_total_PCA)
 
-# Normalizar LR
-##emociones_total_LR_normalizado = normalizar_emociones(emociones_total_LR)
-##optional_print('PCA and Linear Regression results normalized successfully.', verbosity)
+def main(align=False, process=False, generate=False, verbose=True):
+    optional_print("_____________[INICIANDO EJECUCIÓN]_____________", verbose)
 
-# Bootstrapping y similitud coseno (func void solo printea)
+    gc.collect()
+    torch.cuda.empty_cache()
 
-#bootstrapping_todas_emociones(emociones_total_PCA_normalizado, emociones_total_LR_normalizado, emociones, 1000, False)
+    # Define the base directory
+    base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
 
-##optimos_LR = umbrales_optimos(emociones_total_LR, 1000, verbosity)
-##optimos_LR.to_csv('umbrales_optimos_LR.csv', sep='\t')
+    images_data = create_image_dict(base_dir, verbose)
+    
+    if(align==True):
+        optional_print("_____________[ALINEANDO]_____________", verbose)
+        align_all_images(images_data, verbose)
+        optional_print("_____________[ALINEADO]_____________", verbose)
+        df = pd.DataFrame(images_data)
+        df = df.drop(columns=['race', 'attribute', 'ext'])
+        df.to_csv("dataframe.csv", index=False)
+    else:
+        df = pd.read_csv(f'/mnt/discoAmpliado/viky/dataframe.csv')
+        df = df.drop(columns=['race', 'attribute', 'ext'])
+    
+    if(process==True):
+        optional_print("_____________[PROCESANDO]_____________", verbose)
+        process_all_images(1000, verbose)
+        optional_print("_____________[PROCESADO]_____________", verbose)
+    if(generate==True):
+        optional_print("_____________[GENERANDO]_____________", verbose)
+        generate_all_images(verbose)
+        optional_print("_____________[GENERADO]_____________", verbose)
+    
+    optional_print(f"_____________[ALINEADAS CHECK] {check_alineadas(images_data, False)}_____________", verbose)
+    optional_print(f"_____________[NPZ CHECK] {check_npz(images_data, False)[0]}_____________", verbose)
+    
+    df['idUnique'] = df['id'].astype(str) + df['gender']
 
-# TODO: Los outputs de umbrales_optimos son medio raros?
-# Idea: debuggear umbrales_optimos para entender si tiene sentido lo que está haciendo
-# Cómo sigo? Qué falta? (además de hacer andar el docker)
+    # Crear lista de emociones y eliminar 'NE'
+    emociones = df.exp.unique().tolist().remove("NE")  ## En este momento, esto  no se usa para nada.
 
-# TODO: SIGUIENTE PASO: Visualizar los resultados para cada emoción???
+    # Crear lista de IDs
+    ids = df.idUnique.unique().tolist()  ## En este momento, esto  no se usa para nada.
+
+    df_extreme = df[(df['exp_level']==4) | (df['exp']=='NE')]
+
+    restar_vectores_neutros_y_normalizar(df_extreme)
+    ## optional_print(df_extreme, verbose)
+
+    metodo_2(df_extreme)
+
+    optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
+
+main(False, False, False, True)
+
