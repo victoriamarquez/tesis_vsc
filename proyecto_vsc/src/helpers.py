@@ -9,13 +9,30 @@ import os
 
 # Funciones Auxiliares
 
+def save_modified_npz(base_w, delta, out_path):
+    modified_w = np.repeat((base_w + delta)[np.newaxis, :], 18, axis=0)[np.newaxis, :, :]
+    np.savez(out_path, w=modified_w)
+
 # toma un dataframe y un índice y te da el npz correspondiente
-def getNPZ(name):
+def getNPZ_legacy(name):
     filename = f'/mnt/discoAmpliado/viky/images/processed_images/{name}_01_projected_w.npz'
     return load(filename)['w']
 
-def optional_print(text, verbosity=True):
-    if verbosity:
+def getNPZ(name):
+    # Quitar extensión si está presente
+    base_name = name.split('.')[0]
+    filename = f'/mnt/discoAmpliado/viky/images/processed_images/{base_name}_01_projected_w.npz'
+    
+    # Cargar vector
+    w = load(filename)['w']  # (1, 18, 512)
+    
+    # Extraer solo un slice (por ejemplo el primero), y sacar la dimensión repetida
+    w_clean = w[0, 0, :]  # shape: (512,)
+    
+    return w_clean
+
+def optional_print(text, verbose=True):
+    if verbose:
         print(text)
     else:
         ...
@@ -59,7 +76,7 @@ def check_npz(images_data, verbose=False):
     npz_encontrados = []
     npz_no_encontrados = []
     for image in images_data:
-        name = image['name']
+        name = os.path.splitext(image['name'])[0]  
         if not os.path.exists(f'/mnt/discoAmpliado/viky/images/processed_images/{name}_01_projected_w.npz'):
             npz_no_encontrados.append(name)
         else:
@@ -76,7 +93,7 @@ def check_alineadas(images_data, verbose=False):
     alineadas_encontradas = []
     alineadas_no_encontradas = []
     for image in images_data:
-        name = image['name']
+        name = os.path.splitext(image['name'])[0]  
         if not os.path.exists(f'/mnt/discoAmpliado/viky/images/aligned_images/{name}_01.png'):
             alineadas_no_encontradas.append(name)
         else:
