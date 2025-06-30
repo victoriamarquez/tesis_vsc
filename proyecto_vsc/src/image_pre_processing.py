@@ -13,6 +13,8 @@ def parse_file_name(file_name):
         
         emotion = file_name[6:8]  # 'DI'
         intensity = file_name[8:10]  # '04'
+        race = file_name[10:12]
+
         is_neutral = emotion == "NE"
 
         img_type = file_name.split("_")[-1].split(".")[0]  # 'F2D'
@@ -21,6 +23,7 @@ def parse_file_name(file_name):
             "file_name": file_name,
             "person_id": person_id,
             "gender": gender,
+            "race": race,
             "id_num": id_num,
             "emotion": emotion,
             "intensity": intensity,

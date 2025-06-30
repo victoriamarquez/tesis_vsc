@@ -291,9 +291,7 @@ def generate_one_image(image_name, verbose=False):
     subprocess.run(command, check=True)
 
 def generate_one_image_from_npz(npz_path, image_name):
-    
-    #npz_path = f"/scratch/images/processed_images/{image_name}_01_projected_w.npz"
-    outdir_path = "/scratch/images/generated_images"
+    outdir_path = "/scratch/images/generated_prueba_diversidad"
     
     command = [
         "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",

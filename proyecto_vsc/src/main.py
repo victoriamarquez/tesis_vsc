@@ -1,6 +1,7 @@
 
 import gc
 import os
+import subprocess
 
 import numpy as np
 import pandas as pd
@@ -82,8 +83,6 @@ def plot_emotion_directions_grid(df, directions_pca, directions_regression, simi
     plt.savefig("datos/comparacion_metodos_emociones_grid.png", dpi=300)
     plt.show()
 
-
-
 # ----------------------------------
 # Función 1: PCA sobre diferencias neutro - intensidad 04
 # ----------------------------------
@@ -108,6 +107,7 @@ def compute_emotion_direction_pca(df, emotion_code):
     pca.fit(diffs)
     direction = pca.components_[0]
 
+    ## Sanity checks
     ## print(f"[PCA] {emotion_code} → {len(diffs)} vectores")
     return direction
 
@@ -137,12 +137,13 @@ def compute_emotion_direction_regression(df, emotion_code):
 
     X = np.array(X)
     y = np.array(y)
-    X = X - X.mean(axis=0)  # Centrado manual
+    X = X - np.mean(X, axis=0)  # Centrado manual
 
     lr = LinearRegression()
     lr.fit(X, y)
     direction = lr.coef_
 
+    ## Sanity checks
     ##print(f"[LR] {emotion_code} → {len(X)} vectores")
     ##print(f"LR coef shape for {emotion_code}: {lr.coef_.shape}")
     ##print(f"First 5 values: {lr.coef_[:5]}")
@@ -204,18 +205,17 @@ def main(align=False, process=False, generate=False, verbose=True):
     for emotion in emotion_codes:
         try:
             dir_pca = compute_emotion_direction_pca(metadatos_df, emotion)
-            directions_pca[emotion] = dir_pca
-
+            directions_pca[emotion] = dir_pca/np.linalg.norm(dir_pca) # NORMALIZAMOS 
             dir_reg = compute_emotion_direction_regression(metadatos_df, emotion)
-            directions_regression[emotion] = dir_reg
-
+            directions_regression[emotion] = dir_reg/np.linalg.norm(dir_reg) # NORMALIZAMOS
+            
             # Sanity checks
-            ##print(f"PCA norm for {emotion}: {np.linalg.norm(dir_pca)}")
-            ##print(f"LR norm for {emotion}: {np.linalg.norm(dir_reg)}")
-            ##print(f"Dot product for {emotion}: {np.dot(dir_pca, dir_reg):.4f}")
-            ##print(f"Cos PCA ↔ LR for {emotion}: {compare_directions_cosine(dir_pca, dir_reg):.4f}")
-            ##print("dir_pca[:10]:", directions_pca[emotion][:10])
-            ##print("dir_reg[:10]:", directions_regression[emotion][:10])
+            #print(f"PCA norm for {emotion}: {np.linalg.norm(directions_pca[emotion])}")
+            #print(f"LR norm for {emotion}: {np.linalg.norm(directions_regression[emotion])}")
+            #print(f"Dot product for {emotion}: {np.dot(directions_pca[emotion], directions_regression[emotion]):.4f}")
+            #print(f"Cos PCA ↔ LR for {emotion}: {compare_directions_cosine(directions_pca[emotion], directions_regression[emotion]):.4f}")
+            #print("dir_pca[:10]:", directions_pca[emotion][:10])
+            #print("dir_reg[:10]:", directions_regression[emotion][:10])
 
 
         except ValueError as e:
@@ -236,9 +236,9 @@ def main(align=False, process=False, generate=False, verbose=True):
 
 
     # Mostrar las similaridades
-    print("\nSimilaridades coseno entre direcciones PCA y Regresión:")
-    for emotion, sim in similarities.items():
-        print(f"{emotion}: {sim:.4f}")
+    # print("\nSimilaridades coseno entre direcciones PCA y Regresión:")
+    # for emotion, sim in similarities.items():
+    #     print(f"{emotion}: {sim:.4f}")
 
     # ----------------------------------
     # Gráfico para visualizarlas
@@ -261,22 +261,70 @@ def main(align=False, process=False, generate=False, verbose=True):
     #emotion_codes
     #)
 
+    # generate_testing_images(metadatos_df, directions_pca, directions_regression)
+
+    diverse_subset = generate_diverse_testing_subset(metadatos_df, False)
+
+    generate_modified_emotion_images(
+        subset_df=diverse_subset,
+        directions_dict=directions_regression,
+        emotion_multipliers={  ##### AJUSTAR ESTO
+            'HA': 5,
+            'AN': 2,
+            'DI': 0.5,
+            'FE': 2,
+            'SA': 4,
+            'SU': 5
+        },
+        method_name="LR"
+    )
+
+    optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
+
+def generate_diverse_testing_subset(metadatos_df, verbose=True):
+    personas = metadatos_df[['person_id', 'gender', 'race']].drop_duplicates()
+    distrib = personas.groupby(['gender', 'race']).size().reset_index(name='count')
+    
+    if(verbose==True):
+        # Análisis del dataset
+        # Más en general
+        print("Nros\n", metadatos_df['race'].value_counts()/25)
+        print("Porcentajes\n", metadatos_df['race'].value_counts(normalize=True) * 100)
+        print(metadatos_df['gender'].value_counts(normalize=True) * 100)
+
+        # Impreso más lindo
+        print(distrib)
+
+    # Creo conjunto de prueba
+    prueba_personas = (
+        personas.groupby(['gender', 'race'])
+        .sample(n=2, random_state=42)  # Cambiá n=1 si querés una versión más chica
+    )
+
+    subset_df = metadatos_df[metadatos_df['person_id'].isin(prueba_personas['person_id']) & metadatos_df["is_neutral"] == True]
+    return subset_df
+
+def generate_testing_images(metadatos_df, directions_pca, directions_regression):
     output_npz_dir = "images/processed_images"
     os.makedirs(output_npz_dir, exist_ok=True)
 
     # Emociones y multiplicadores a testear
     emotion_codes = ['HA', 'AN', 'DI', 'FE', 'SA', 'SU']
-    multiplicadores_pca = [10, 15, 20, 25, 30, 35, 40, 45, 50]
-    multiplicadores_lr = [0.5, 1, 2, 3, 4, 5, 6, 7, 10]
+    multiplicadores_pca = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+    multiplicadores_lr = [0.1, 0.5, 1, 2, 3, 4, 5, 6, 7, 10]
 
     # Imagen base neutra
     neutrals = metadatos_df[metadatos_df["is_neutral"] == True]
     sample_row = neutrals.iloc[2]  ## Acá se puede cambiar la imagen neutra que se usa de base
-    base_w = sample_row["latent_vector"]
+    base_w = sample_row["latent_vector"] ## Acá NO HAY QUE NORMALIZAR porque manda la imagen al centro del espacio.
+    print(f"Shape neutral vector: {base_w.shape}")
+    print(f"GENERATING FROM PERSON {sample_row['person_id']}")
 
     for emotion in emotion_codes:
         delta_pca = directions_pca[emotion]
         delta_lr = directions_regression[emotion]
+        print(f"Shape PCA vector: {delta_pca.shape}, shape LR vector {delta_lr.shape}")
+
 
         # PCA
         for mult in multiplicadores_pca:
@@ -292,7 +340,35 @@ def main(align=False, process=False, generate=False, verbose=True):
             save_modified_npz(base_w, scaled_delta, lr_outfile)
             generate_one_image_from_npz(lr_outfile, f"AA_{emotion}_LR_x{mult}")
 
-    optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
+def generate_modified_emotion_images(
+    subset_df,
+    directions_dict,
+    emotion_multipliers,
+    method_name,
+    output_npz_dir="images/processed_images"
+):
+    subset_df = subset_df.copy()
+
+    for _, row in subset_df.iterrows():
+        person_id = row['person_id']
+        neutral_vec = row['latent_vector']
+
+        for emotion, direction in directions_dict.items():
+            multiplier = emotion_multipliers.get(emotion, 1.0)
+            modified_vec = neutral_vec + multiplier * direction
+
+            # Construir nombre base y path
+            base_name = f"AA_prueba_{method_name}_{emotion}_{person_id}"
+            npz_path = os.path.join(output_npz_dir, f"{base_name}.npz")
+
+            # Guardar el vector modificado como npz en formato (1, 18, 512)
+            modified_w = np.tile(modified_vec[np.newaxis, :], (18, 1))[np.newaxis, :, :]
+            np.savez(npz_path, w=modified_w)
+            print(npz_path)
+
+            # Generar imagen usando función modular
+            generate_one_image_from_npz(npz_path=npz_path, image_name=base_name)
+
 
 main(False, False, False, True)
 
