@@ -1,26 +1,20 @@
 
 import gc
 import os
-import subprocess
-
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 import torch
 
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as  sns
 
 from helpers import getNPZ, optional_print, save_modified_npz
 from image_pre_processing import construir_dataframe_imagenes
 from image_processing import align_all_images_from_df, generate_all_images, generate_one_image_from_npz, process_all_images
-
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
+from celebA_processing import load_celeba_attributes
 
 def plot_emotion_directions_grid(df, directions_pca, directions_regression, similarities, emotion_codes):
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
@@ -155,7 +149,7 @@ def compare_directions_cosine(dir1, dir2):
         sim = cosine_similarity(v1, v2)[0, 0]
         return sim
 
-def main(align=False, process=False, generate=False, verbose=True):
+def main(align=False, process=False, generate=False, diverse_test=False, celebA=False, verbose=True):
     optional_print("_____________[INICIANDO EJECUCIÓN]_____________", verbose)
 
     gc.collect()
@@ -167,7 +161,7 @@ def main(align=False, process=False, generate=False, verbose=True):
     metadatos_df = construir_dataframe_imagenes(base_dir)
     metadatos_df.to_csv("datos/metadatos.csv", index=False)
     
-    if(align==True):
+    if(align):
         optional_print("_____________[ALINEANDO]_____________", verbose)
         align_all_images_from_df(
             df=metadatos_df,
@@ -176,12 +170,12 @@ def main(align=False, process=False, generate=False, verbose=True):
             verbose=True
         )
         optional_print("_____________[ALINEADO]_____________", verbose)   
-    if(process==True):
+    if(process):
         optional_print("_____________[PROCESANDO]_____________", verbose)
         #process_all_images_from_df(metadatos_df, steps=200, verbose=True, max_images=3)
         process_all_images(1000, verbose) ## Vamos a hacer de cuenta que esto está bien porque no sé cómo arreglarlo
         optional_print("_____________[PROCESADO]_____________", verbose)
-    if(generate==True):
+    if(generate):
         optional_print("_____________[GENERANDO]_____________", verbose)
         generate_all_images(verbose)
         optional_print("_____________[GENERADO]_____________", verbose)
@@ -263,21 +257,29 @@ def main(align=False, process=False, generate=False, verbose=True):
 
     # generate_testing_images(metadatos_df, directions_pca, directions_regression)
 
-    diverse_subset = generate_diverse_testing_subset(metadatos_df, False)
+    if diverse_test:
+        diverse_subset = generate_diverse_testing_subset(metadatos_df, False)
 
-    generate_modified_emotion_images(
-        subset_df=diverse_subset,
-        directions_dict=directions_regression,
-        emotion_multipliers={  ##### AJUSTAR ESTO
-            'HA': 5,
-            'AN': 2,
-            'DI': 0.5,
-            'FE': 2,
-            'SA': 4,
-            'SU': 5
-        },
-        method_name="LR"
-    )
+        generate_modified_emotion_images(
+            subset_df=diverse_subset,
+            directions_dict=directions_regression,
+            emotion_multipliers={  ##### AJUSTAR ESTO
+                'HA': 5,
+                'AN': 2,
+                'DI': 0.5,
+                'FE': 2,
+                'SA': 4,
+                'SU': 4.5
+            },
+            method_name="LR"
+        )
+
+    if celebA:
+        celeba_df = load_celeba_attributes("/mnt/discoAmpliado/viky/CelebA/list_attr_celeba.txt")
+        celeba_neutral_df = celeba_df[(celeba_df['Smiling'] == -1) & (celeba_df['Eyeglasses'] == -1)]
+        celeba_sample_df = celeba_neutral_df.sample(n=10, random_state=42) # Elegimos 10 imágenes al azar para probar
+        print(celeba_sample_df)
+        
 
     optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
 
@@ -369,6 +371,5 @@ def generate_modified_emotion_images(
             # Generar imagen usando función modular
             generate_one_image_from_npz(npz_path=npz_path, image_name=base_name)
 
-
-main(False, False, False, True)
+main(False, False, False, False, True, True)
 

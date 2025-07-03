@@ -15,9 +15,9 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from image_pre_processing import *
 from image_processing import *
-from pca import *
-from lr import *
-from bootstrapping import *
+from proyecto_vsc.src.legacy.pca import *
+from proyecto_vsc.src.legacy.lr import *
+from proyecto_vsc.src.legacy.bootstrapping import *
 import subprocess
 
 
