@@ -194,9 +194,8 @@ def process_one_image(image_name, steps, verbose=False):
     optional_print("Proyección completa para todas las imágenes.", verbose)
 
 
-def process_all_images(steps, verbose=False):
+def process_all_images(aligned_images_dir, steps, verbose=False):
     # Directorio donde están las imágenes
-    aligned_images_dir = '/mnt/discoAmpliado/viky/images/aligned_images/'
 
     # Obtener una lista de todas las imágenes en el directorio
     imagenes = [f for f in os.listdir(aligned_images_dir) if f.endswith('.png')]
@@ -290,8 +289,8 @@ def generate_one_image(image_name, verbose=False):
     optional_print(f"Comando: {' '.join(command)}", verbose)
     subprocess.run(command, check=True)
 
-def generate_one_image_from_npz(npz_path, image_name):
-    outdir_path = "/scratch/images/generated_prueba_diversidad"
+def generate_one_image_from_npz(npz_path, image_name, outdir_path):
+    ###outdir_path = "/scratch/images/generated_prueba_diversidad"
     
     command = [
         "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
