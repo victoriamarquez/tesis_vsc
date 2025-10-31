@@ -25,6 +25,7 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
 
     # Define the base directory
     base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
+    ##### TODO: Hay que cambiar este directorio
 
     metadatos_df = construir_dataframe_imagenes(base_dir)
     metadatos_df.to_csv("datos/metadatos.csv", index=False)
@@ -146,4 +147,4 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
 
     optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
 
-main(align=False, process=False, generate=False, diverse_test=False, celebA=True, verbose=True)
+main(align=True, process=True, generate=True, diverse_test=True, celebA=True, verbose=True)
