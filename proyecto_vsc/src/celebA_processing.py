@@ -10,6 +10,7 @@ from image_processing import generate_one_image_from_npz
 
 
 def load_celeba_attributes(attr_path):
+    print("FUNCT: load_celeba_attributes")
     with open(attr_path, 'r') as f:
         lines = f.readlines()
 
@@ -30,9 +31,10 @@ def load_celeba_attributes(attr_path):
 
 
 def process_selected_celeba_images_from_df(df, steps, verbose=False):
+    print("FUNC: process_selected_celeba_images_from_df")
     # Path base en el host
-    base_input_host = "/mnt/discoAmpliado/viky/CelebA/img_align_celeba"
-    base_output_host = "/mnt/discoAmpliado/viky/CelebA/npz_aligned_celeba"
+    base_input_host = "/home/vicky/Documents/tesis_vsc/images/CelebA/img_align_celeba"
+    base_output_host = "/home/vicky/Documents/tesis_vsc/images/CelebA/img_align_celeba"
 
     # Path que ve el contenedor
     base_input_docker = "/scratch/CelebA/img_align_celeba"
@@ -43,7 +45,7 @@ def process_selected_celeba_images_from_df(df, steps, verbose=False):
 
     # Comando base
     command_base = [
-        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "/home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh",
         "python", "stylegan2-ada-pytorch/projector.py",
         "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
         f"--num-steps={steps}",
@@ -113,6 +115,7 @@ def process_emotions_celeba(npz_input_dir, emotion_vectors, multiplicadores, out
     """
     # Obtener lista de .npz a procesar
     npz_paths = sorted(glob(os.path.join(npz_input_dir, "*.npz")))
+    print(npz_paths)
     if max_imagenes is not None:
         npz_paths = npz_paths[:max_imagenes]
 

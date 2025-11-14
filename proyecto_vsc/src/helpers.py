@@ -15,13 +15,13 @@ def save_modified_npz(base_w, delta, out_path):
 
 # toma un dataframe y un índice y te da el npz correspondiente
 def getNPZ_legacy(name):
-    filename = f'/mnt/discoAmpliado/viky/images/processed_images/{name}_01_projected_w.npz'
+    filename = f'/home/vicky/Documents/tesis_vsc/images/processed_images/{name}_01_projected_w.npz'
     return load(filename)['w']
 
 def getNPZ(name):
     # Quitar extensión si está presente
     base_name = name.split('.')[0]
-    filename = f'/mnt/discoAmpliado/viky/images/processed_images/{base_name}_01_projected_w.npz'
+    filename = f'/home/vicky/Documents/tesis_vsc/images/processed_images/{base_name}_01_projected_w.npz'
     
     # Cargar vector
     w = load(filename)['w']  # (1, 18, 512)
@@ -77,7 +77,7 @@ def check_npz(images_data, verbose=False):
     npz_no_encontrados = []
     for image in images_data:
         name = os.path.splitext(image['name'])[0]  
-        if not os.path.exists(f'/mnt/discoAmpliado/viky/images/processed_images/{name}_01_projected_w.npz'):
+        if not os.path.exists(f'/home/vicky/Documents/tesis_vsc/images/processed_images/{name}_01_projected_w.npz'):
             npz_no_encontrados.append(name)
         else:
             npz_encontrados.append(name)
@@ -93,8 +93,9 @@ def check_alineadas(images_data, verbose=False):
     alineadas_encontradas = []
     alineadas_no_encontradas = []
     for image in images_data:
-        name = os.path.splitext(image['name'])[0]  
-        if not os.path.exists(f'/mnt/discoAmpliado/viky/images/aligned_images/{name}_01.png'):
+        #name = os.path.splitext(image['name'])[0]  
+        print(image)
+        if not os.path.exists(f'/home/vicky/Documents/tesis_vsc/images/aligned_images/{name}_01.png'):
             alineadas_no_encontradas.append(name)
         else:
             alineadas_encontradas.append(name)

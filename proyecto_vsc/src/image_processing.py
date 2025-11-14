@@ -202,7 +202,7 @@ def process_all_images(aligned_images_dir, steps, verbose=False):
 
     # Comando base para ejecutar
     command_base = [
-        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "/home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh",
         "python", "stylegan2-ada-pytorch/projector.py",
         "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
         f"--num-steps={steps}",
@@ -241,7 +241,7 @@ def process_all_images_in_df(df, steps, verbose=True):
 
     # Comando base para ejecutar
     command_base = [
-        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "/home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh",
         "python", "stylegan2-ada-pytorch/projector.py",
         "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
         f"--num-steps={steps}",
@@ -293,7 +293,7 @@ def generate_one_image_from_npz(npz_path, image_name, outdir_path):
     ###outdir_path = "/scratch/images/generated_prueba_diversidad"
     
     command = [
-        "/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+        "/home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh",
         "python",
         "stylegan2-ada-pytorch/generate.py",
         "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl",
@@ -307,12 +307,12 @@ def generate_one_image_from_npz(npz_path, image_name, outdir_path):
 
 def generate_all_images(verbose=False):
 
-    processed_images_dir = '/mnt/discoAmpliado/viky/images/processed_images/'
+    processed_images_dir = '/home/vicky/Documents/tesis_vsc/images/processed_images'
 
     # Obtener una lista de todas las imágenes en el directorio
     imagenes = [f for f in os.listdir(processed_images_dir) if f.endswith('.npz')]
 
-    command_base = ["/mnt/discoAmpliado/viky/stylegan2-ada-pytorch/docker_run.sh",
+    command_base = ["/home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh",
         "python",
         "stylegan2-ada-pytorch/generate.py",
         "--network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl"

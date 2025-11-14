@@ -8,7 +8,7 @@ import torch
 import matplotlib.pyplot as plt
 import seaborn as  sns
 
-from helpers import getNPZ, optional_print, save_modified_npz
+from helpers import getNPZ, optional_print, save_modified_npz, check_alineadas, check_npz
 from image_pre_processing import construir_dataframe_imagenes
 from image_processing import align_all_images_from_df, generate_all_images, process_all_images
 from celebA_processing import load_celeba_attributes, process_emotions_celeba, process_selected_celeba_images_from_df
@@ -24,33 +24,33 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
     torch.cuda.empty_cache()
 
     # Define the base directory
-    base_dir = "/mnt/discoAmpliado/viky/BU_3DFE"
+    base_dir = "/home/vicky/Documents/BU_3DFE"
     ##### TODO: Hay que cambiar este directorio
 
     metadatos_df = construir_dataframe_imagenes(base_dir)
-    metadatos_df.to_csv("datos/metadatos.csv", index=False)
+    metadatos_df.to_csv("/home/vicky/Documents/tesis_vsc/datos/metadatos.csv", index=False)
     
     if(align):
         optional_print("_____________[ALINEANDO]_____________", verbose)
         align_all_images_from_df(
             df=metadatos_df,
-            script_path="/mnt/discoAmpliado/viky/stylegan2encoder/align_images.py",
-            output_path="/mnt/discoAmpliado/viky/images/aligned_images",
+            script_path="/home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py",
+            output_path="/home/vicky/Documents/tesis_vsc/images/aligned_images",
             verbose=True
         )
         optional_print("_____________[ALINEADO]_____________", verbose)   
     if(process):
         optional_print("_____________[PROCESANDO]_____________", verbose)
         #process_all_images_from_df(metadatos_df, steps=200, verbose=True, max_images=3)
-        process_all_images('/mnt/discoAmpliado/viky/images/aligned_images/', 1000, verbose) ## Vamos a hacer de cuenta que esto está bien porque no sé cómo arreglarlo
+        process_all_images('/home/vicky/Documents/tesis_vsc/images/aligned_images', 1000, verbose) ## Vamos a hacer de cuenta que esto está bien porque no sé cómo arreglarlo
         optional_print("_____________[PROCESADO]_____________", verbose)
     if(generate):
         optional_print("_____________[GENERANDO]_____________", verbose)
         generate_all_images(verbose)
         optional_print("_____________[GENERADO]_____________", verbose)
     
-    ##optional_print(f"_____________[ALINEADAS CHECK] {check_alineadas(metadatos_df, False)}_____________", verbose)
-    ##optional_print(f"_____________[NPZ CHECK] {check_npz(metadatos_df, False)[0]}_____________", verbose)
+    #optional_print(f"_____________[ALINEADAS CHECK] {check_alineadas(metadatos_df, False)}_____________", verbose)
+    #optional_print(f"_____________[NPZ CHECK] {check_npz(metadatos_df, False)[0]}_____________", verbose)
     metadatos_df['latent_vector'] = metadatos_df['file_name'].apply(getNPZ)
     metadatos_df.to_pickle("datos/metadatos_con_vectores.pkl")
     metadatos_df = pd.read_pickle("datos/metadatos_con_vectores.pkl")
@@ -123,10 +123,10 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
         )
 
     if celebA:
-        celeba_df = load_celeba_attributes("/mnt/discoAmpliado/viky/CelebA/list_attr_celeba.txt")
+        celeba_df = load_celeba_attributes("/home/vicky/Documents/tesis_vsc/list_attr_celeba.txt")
         celeba_neutral_df = celeba_df[(celeba_df['Smiling'] == -1) & (celeba_df['Eyeglasses'] == -1)]
         celeba_sample_df = celeba_neutral_df.sample(n=10, random_state=42) # Elegimos 10 imágenes al azar para probar
-        #######process_selected_celeba_images_from_df(celeba_sample_df, 1000, True)
+        process_selected_celeba_images_from_df(celeba_sample_df, 1000, True)
         multiplicadores = {
             'HA': 5,
             'AN': 2,
@@ -137,7 +137,7 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
         }
 
         process_emotions_celeba(
-            npz_input_dir="/mnt/discoAmpliado/viky/CelebA/npz_aligned_celeba",
+            npz_input_dir="/home/vicky/Documents/tesis_vsc/images/CelebA/npz_aligned_celeba", ## ESTO ESTÁ VACÍO
             emotion_vectors=directions_regression,
             multiplicadores=multiplicadores,
             output_npz_dir="CelebA/npz_emotion_celeba",
@@ -147,4 +147,4 @@ def main(align=False, process=False, generate=False, diverse_test=False, celebA=
 
     optional_print("_____________[EJECUCIÓN FINALIZADA]_____________", verbose)
 
-main(align=True, process=True, generate=True, diverse_test=True, celebA=True, verbose=True)
+main(align=False, process=False, generate=False, diverse_test=False, celebA=True, verbose=True)
