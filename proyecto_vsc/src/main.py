@@ -4,9 +4,9 @@ import os
 import numpy as np
 import pandas as pd
 import torch
-
 import matplotlib.pyplot as plt
 import seaborn as  sns
+import argparse
 
 from helpers import getNPZ, optional_print, save_modified_npz, check_alineadas, check_npz
 from image_pre_processing import construir_dataframe_imagenes
