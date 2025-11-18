@@ -76,6 +76,8 @@ def main():
     if args.mode == 'calculate_vectors':
         print("🛠️ Ejecutando el cálculo de vectores...")
         calculate_vectors(align=True, process=True, generate=True, verbose=args.verbose)
+        with open("log.txt", "w") as file:
+            file.write("Terminó ejecución calculate_vectors\n")
         pass
     
     elif args.mode == 'modify_image':
