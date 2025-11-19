@@ -225,13 +225,13 @@ def process_all_images(aligned_images_dir, steps, verbose=False):
         ]
         
         # Imprimir el comando para depuración
-        optional_print(f"Ejecutando para la imagen: {imagen}", verbose)
-        optional_print(f"Comando: {' '.join(command)}", verbose)
+        logging.info(f"Ejecutando para la imagen: {imagen}")
+        logging.info(f"Comando: {' '.join(command)}")
 
         # Ejecutar el comando
         subprocess.run(command, check=True)
 
-    optional_print("Proyección completa para todas las imágenes.", verbose)
+    logging.info("Proyección completa para todas las imágenes.")
 
 def process_all_images_in_df(df, steps, verbose=True):
     # Directorio donde están las imágenes

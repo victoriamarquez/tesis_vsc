@@ -1,13 +1,11 @@
-2025-11-19 15:04:33,806 - INFO - --- Argumentos Globales ---
-2025-11-19 15:04:33,806 - INFO - Modo seleccionado: calculate_vectors
-2025-11-19 15:04:33,806 - INFO - Logging activo: True
-2025-11-19 15:04:33,806 - INFO - Verbose: True
-2025-11-19 15:04:33,806 - INFO - ---------------------------
-2025-11-19 15:04:33,806 - INFO - 🛠️ Ejecutando el cálculo de vectores...
-2025-11-19 15:04:33,806 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
-2025-11-19 15:04:33,857 - INFO - _____________[GENERANDO]_____________
-2025-11-19 15:04:33,857 - DEBUG - Función: generate_all_images.
-2025-11-19 15:04:33,858 - INFO - Ejecutando para la imagen: M0024_FE04AE_F2D_01_projected_w.npz
-2025-11-19 15:04:33,858 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/generate.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --outdir=/scratch/images/generated_images --projected-w=/scratch/images/processed_images/M0024_FE04AE_F2D_01_projected_w.npz
-2025-11-19 15:04:37,848 - INFO - Ejecutando para la imagen: F0048_SU03AE_F2D_01_projected_w.npz
-2025-11-19 15:04:37,848 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/generate.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --outdir=/scratch/images/generated_images --projected-w=/scratch/images/processed_images/F0048_SU03AE_F2D_01_projected_w.npz
+2025-11-19 15:21:35,224 - INFO - --- Argumentos Globales ---
+2025-11-19 15:21:35,224 - INFO - Modo seleccionado: calculate_vectors
+2025-11-19 15:21:35,224 - INFO - Logging activo: True
+2025-11-19 15:21:35,224 - INFO - Verbose: True
+2025-11-19 15:21:35,224 - INFO - ---------------------------
+2025-11-19 15:21:35,224 - INFO - 🛠️ Ejecutando el cálculo de vectores...
+2025-11-19 15:21:35,224 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
+2025-11-19 15:21:35,275 - INFO - _____________[PROCESANDO]_____________
+2025-11-19 15:21:35,275 - DEBUG - Función: process_all_images. Argumentos /home/vicky/Documents/tesis_vsc/images/aligned_images, 1000.
+2025-11-19 15:21:35,275 - INFO - Ejecutando para la imagen: M0014_HA01WH_F2D_01.png
+2025-11-19 15:21:35,275 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/projector.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --num-steps=1000 --seed=303 --save-video=False --target=/scratch/images/aligned_images/M0014_HA01WH_F2D_01.png --outdir=/scratch/images/processed_images

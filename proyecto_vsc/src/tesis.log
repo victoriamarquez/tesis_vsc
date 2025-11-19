@@ -1,0 +1,11 @@
+2025-11-19 15:18:44,247 - INFO - --- Argumentos Globales ---
+2025-11-19 15:18:44,247 - INFO - Modo seleccionado: calculate_vectors
+2025-11-19 15:18:44,247 - INFO - Logging activo: True
+2025-11-19 15:18:44,247 - INFO - Verbose: True
+2025-11-19 15:18:44,247 - INFO - ---------------------------
+2025-11-19 15:18:44,247 - INFO - 🛠️ Ejecutando el cálculo de vectores...
+2025-11-19 15:18:44,247 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
+2025-11-19 15:18:44,298 - INFO - _____________[PROCESANDO]_____________
+2025-11-19 15:18:44,298 - DEBUG - Función: process_all_images. Argumentos /home/vicky/Documents/tesis_vsc/images/aligned_images, 1000.
+2025-11-19 15:18:44,298 - INFO - Ejecutando para la imagen: M0014_HA01WH_F2D_01.png
+2025-11-19 15:18:44,298 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/projector.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --num-steps=1000 --seed=303 --save-video=False --target=/scratch/images/aligned_images/M0014_HA01WH_F2D_01.png --outdir=/scratch/images/processed_images

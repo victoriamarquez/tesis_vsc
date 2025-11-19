@@ -45,8 +45,8 @@ def calculate_vectors(align=False, process=False, generate=False, verbose=True):
         generate_all_images(verbose)
         logging.info("_____________[GENERADO]_____________")
     
-    logging.info(f"_____________[ALINEADAS CHECK] {check_alineadas(metadatos_df, False)}_____________")
-    logging.info(f"_____________[NPZ CHECK] {check_npz(metadatos_df, False)[0]}_____________")
+    #logging.info(f"_____________[ALINEADAS CHECK] {check_alineadas(metadatos_df, False)}_____________")
+    #logging.info(f"_____________[NPZ CHECK] {check_npz(metadatos_df, False)[0]}_____________")
     metadatos_df['latent_vector'] = metadatos_df['file_name'].apply(getNPZ)
     metadatos_df.to_pickle("datos/metadatos_con_vectores.pkl")
     metadatos_df = pd.read_pickle("datos/metadatos_con_vectores.pkl")

@@ -24,6 +24,14 @@ set -e
 # IMAGE=my_image:v1.0 ./docker_run.sh python generate.py --help
 #
 
+#echo "--- 🐳 Verificación de Entorno Docker ---"
+#echo "Directorio de trabajo actual (PWD):"
+#pwd
+#echo "Contenido del directorio de trabajo:"
+#ls -la
+#echo "-----------------------------------------"
+
+
 rest=$@
 
 IMAGE="${IMAGE:-sg2ada:latest}"
