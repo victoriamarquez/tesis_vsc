@@ -1,3 +1,4 @@
+import logging
 import os
 import pandas as pd
 from helpers import *
@@ -17,7 +18,7 @@ def align_all_images_from_df(df, script_path, output_path, verbose=True):
         output_path (str or Path): Carpeta donde se guardarán las imágenes alineadas.
         verbose (bool): Si True, imprime el progreso.
     """
-
+    logging.debug(f"Función: align_all_images_from_df. Argumentos: {df.head()}, {script_path}, {output_path}.")
     # Configurar entorno para evitar logs ruidosos
     os.environ['KMP_WARNINGS'] = '0'
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -195,6 +196,7 @@ def process_one_image(image_name, steps, verbose=False):
 
 
 def process_all_images(aligned_images_dir, steps, verbose=False):
+    logging.debug(f"Función: process_all_images. Argumentos {aligned_images_dir}, {steps}.")
     # Directorio donde están las imágenes
 
     # Obtener una lista de todas las imágenes en el directorio
@@ -306,6 +308,7 @@ def generate_one_image_from_npz(npz_path, image_name, outdir_path):
 
 
 def generate_all_images(verbose=False):
+    logging.debug("Función: generate_all_images.")
 
     processed_images_dir = '/home/vicky/Documents/tesis_vsc/images/processed_images'
 
@@ -329,9 +332,9 @@ def generate_all_images(verbose=False):
         ]
 
         # Imprimir el comando para depuración
-        optional_print(f"Ejecutando para la imagen: {imagen}", verbose)
-        optional_print(f"Comando: {' '.join(command)}", verbose)
+        logging.info(f"Ejecutando para la imagen: {imagen}")
+        logging.info(f"Comando: {' '.join(command)}")
         subprocess.run(command, check=True)
 
-    optional_print("Generación completa para todas las imágenes.", verbose)
+    logging.info("Generación completa para todas las imágenes.")
     

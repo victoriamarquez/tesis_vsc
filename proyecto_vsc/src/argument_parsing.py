@@ -1,10 +1,12 @@
 import argparse
+import logging
 import sys
 
 from calculate_vectors import calculate_vectors
 from testing import execute_tests
 
 def main():
+
     # 1. Configuración del ArgumentParser Principal
     parser = argparse.ArgumentParser(
         description='Tesis de licenciatura: Herramienta de generación de imágenes con diferentes expresiones faciales.',
@@ -14,8 +16,8 @@ def main():
     # Argumentos Globales (Aplican a todos los modos)
     parser.add_argument(
         '-v', '--verbose',
-        action='store_true',
-        default=False,
+        action='store_false',
+        default=True,
         help='Mostrar mensajes detallados de ejecución.'
     )
 
@@ -66,28 +68,38 @@ def main():
     # 3. Análisis de Argumentos y Uso
     args = parser.parse_args()
 
-    print('--- Argumentos Globales ---')
-    print(f'Modo seleccionado: {args.mode}')
-    print(f'Logging activo: {args.logging}')
-    print(f'Verbose: {args.verbose}')
-    print('---------------------------')
+    logging.basicConfig( 
+        level=logging.DEBUG if args.logging==True else logging.ERROR,           
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler("tesis.log", mode='w'),  # Logs to a file named tesis.log, clears on start
+            logging.StreamHandler()         # Logs to the console (terminal)
+        ] if args.verbose==True else [logging.FileHandler("tesis.log")]
+    )
+
+    logging.info('--- Argumentos Globales ---')
+    logging.info(f'Modo seleccionado: {args.mode}')
+    logging.info(f'Logging activo: {args.logging}')
+    logging.info(f'Verbose: {args.verbose}')
+    logging.info('---------------------------')
 
     # Lógica para cada modo (usando el atributo 'mode' de args)
     if args.mode == 'calculate_vectors':
-        print("🛠️ Ejecutando el cálculo de vectores...")
+        logging.info("🛠️ Ejecutando el cálculo de vectores...")
         calculate_vectors(align=True, process=True, generate=True, verbose=args.verbose)
-        with open("log.txt", "w") as file:
-            file.write("Terminó ejecución calculate_vectors\n")
+        logging.info("🛠️ Finalizó ejecución calculate_vectors")
         pass
     
     elif args.mode == 'modify_image':
-        print(f"🖼️ Modificando imagen en la carpeta: **{args.input_folder}**")
+        logging.info(f"🖼️ Modificando imagen en la carpeta: **{args.input_folder}**")
         # El parámetro 'input_folder' solo está disponible cuando 'mode' es 'modify_image'
+        logging.info(f"🖼️ Finalizó modificación de imagen en la carpeta: **{args.input_folder}**")
         pass
         
     elif args.mode == 'test':
-        print("✅ Ejecutando pruebas...")
+        logging.info("✅ Ejecutando pruebas...")
         execute_tests()
+        logging.info("✅ Finalizó ejecución de pruebas.")
         pass
 
 if __name__ == '__main__':

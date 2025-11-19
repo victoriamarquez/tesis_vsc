@@ -1,0 +1,13 @@
+2025-11-19 15:04:33,806 - INFO - --- Argumentos Globales ---
+2025-11-19 15:04:33,806 - INFO - Modo seleccionado: calculate_vectors
+2025-11-19 15:04:33,806 - INFO - Logging activo: True
+2025-11-19 15:04:33,806 - INFO - Verbose: True
+2025-11-19 15:04:33,806 - INFO - ---------------------------
+2025-11-19 15:04:33,806 - INFO - 🛠️ Ejecutando el cálculo de vectores...
+2025-11-19 15:04:33,806 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
+2025-11-19 15:04:33,857 - INFO - _____________[GENERANDO]_____________
+2025-11-19 15:04:33,857 - DEBUG - Función: generate_all_images.
+2025-11-19 15:04:33,858 - INFO - Ejecutando para la imagen: M0024_FE04AE_F2D_01_projected_w.npz
+2025-11-19 15:04:33,858 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/generate.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --outdir=/scratch/images/generated_images --projected-w=/scratch/images/processed_images/M0024_FE04AE_F2D_01_projected_w.npz
+2025-11-19 15:04:37,848 - INFO - Ejecutando para la imagen: F0048_SU03AE_F2D_01_projected_w.npz
+2025-11-19 15:04:37,848 - INFO - Comando: /home/vicky/Documents/tesis_vsc/stylegan2-ada-pytorch/docker_run.sh python stylegan2-ada-pytorch/generate.py --network=https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl --outdir=/scratch/images/generated_images --projected-w=/scratch/images/processed_images/F0048_SU03AE_F2D_01_projected_w.npz
