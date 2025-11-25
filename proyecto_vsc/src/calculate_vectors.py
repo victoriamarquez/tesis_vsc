@@ -89,7 +89,8 @@ def calculate_vectors(align=False, process=False, generate=False, verbose=True):
             sim = compare_directions_cosine(directions_pca[emotion], directions_regression[emotion])
             similarities[emotion] = sim
 
-    directions_regression.to_csv("/home/vicky/Documents/tesis_vsc/datos/directions_regression.csv", index=False)
+    
+    pd.DataFrame(directions_regression).to_csv("/home/vicky/Documents/tesis_vsc/datos/directions_regression.csv", index=False)
 
     # plot_emotion_directions_grid(
     # metadatos_df,

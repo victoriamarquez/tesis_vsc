@@ -49,8 +49,8 @@ def align_all_images_from_df(df, script_path, output_path, verbose=True):
         ]
 
         if verbose:
-            print(f"\n[→] Alineando imágenes en: {carpeta}")
-            print("    Comando:", " ".join(command))
+            logging.info(f"[→] Alineando imágenes en: {carpeta}")
+            logging.info(f"    Comando: {' '.join(command)}")
 
         subprocess.run(command, check=True)
 
