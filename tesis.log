@@ -1,9 +1,32 @@
-2025-11-25 18:44:41,565 - INFO - --- Argumentos Globales ---
-2025-11-25 18:44:41,566 - INFO - Modo seleccionado: calculate_vectors
-2025-11-25 18:44:41,566 - INFO - Logging activo: True
-2025-11-25 18:44:41,566 - INFO - Verbose: True
-2025-11-25 18:44:41,566 - INFO - ---------------------------
-2025-11-25 18:44:41,566 - INFO - 🛠️ Ejecutando el cálculo de vectores...
-2025-11-25 18:44:41,566 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
-2025-11-25 18:44:42,848 - INFO - _____________[EJECUCIÓN FINALIZADA]_____________
-2025-11-25 18:44:42,848 - INFO - 🛠️ Finalizó ejecución calculate_vectors
+2025-11-25 18:54:58,889 - INFO - --- Argumentos Globales ---
+2025-11-25 18:54:58,889 - INFO - Modo seleccionado: calculate_vectors
+2025-11-25 18:54:58,889 - INFO - Logging activo: True
+2025-11-25 18:54:58,889 - INFO - Verbose: True
+2025-11-25 18:54:58,889 - INFO - ---------------------------
+2025-11-25 18:54:58,889 - INFO - 🛠️ Ejecutando el cálculo de vectores...
+2025-11-25 18:54:58,889 - INFO - _____________[INICIANDO EJECUCIÓN]_____________
+2025-11-25 18:54:58,940 - INFO - _____________[ALINEANDO]_____________
+2025-11-25 18:54:58,945 - DEBUG - Función: align_all_images_from_df. Argumentos:               file_name  ...                                      original_path
+0  M0014_SA03WH_F2D.bmp  ...  /home/vicky/Documents/BU_3DFE/M0014/M0014_SA03...
+1  M0014_DI01WH_F2D.bmp  ...  /home/vicky/Documents/BU_3DFE/M0014/M0014_DI01...
+2  M0014_HA03WH_F2D.bmp  ...  /home/vicky/Documents/BU_3DFE/M0014/M0014_HA03...
+3  M0014_SU03WH_F2D.bmp  ...  /home/vicky/Documents/BU_3DFE/M0014/M0014_SU03...
+4  M0014_HA01WH_F2D.bmp  ...  /home/vicky/Documents/BU_3DFE/M0014/M0014_HA01...
+
+[5 rows x 10 columns], /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py, /home/vicky/Documents/tesis_vsc/images/aligned_images.
+2025-11-25 18:54:58,955 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/M0014
+2025-11-25 18:54:58,955 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/M0014 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:55:22,024 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/M0039
+2025-11-25 18:55:22,024 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/M0039 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:55:45,628 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/M0017
+2025-11-25 18:55:45,628 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/M0017 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:56:09,139 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/M0022
+2025-11-25 18:56:09,139 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/M0022 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:56:31,651 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/F0002
+2025-11-25 18:56:31,651 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/F0002 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:56:54,753 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/F0054
+2025-11-25 18:56:54,753 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/F0054 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:57:19,931 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/F0045
+2025-11-25 18:57:19,931 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/F0045 /home/vicky/Documents/tesis_vsc/images/aligned_images
+2025-11-25 18:57:43,433 - INFO - [→] Alineando imágenes en: /home/vicky/Documents/BU_3DFE/F0021
+2025-11-25 18:57:43,434 - INFO -     Comando: python3 /home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py /home/vicky/Documents/BU_3DFE/F0021 /home/vicky/Documents/tesis_vsc/images/aligned_images
