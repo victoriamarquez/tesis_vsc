@@ -1,30 +1,53 @@
-2025-11-30 21:28:18,433 - INFO - --- Argumentos Globales ---
-2025-11-30 21:28:18,433 - INFO - Modo seleccionado: modify_image
-2025-11-30 21:28:18,433 - INFO - Logging activo: True
-2025-11-30 21:28:18,433 - INFO - Verbose: True
-2025-11-30 21:28:18,433 - INFO - ---------------------------
-2025-11-30 21:28:18,464 - INFO - 🖼️ Modificando imagen en la carpeta: images/testing_modification
-2025-11-30 21:28:18,465 - INFO - [modify_image] [→] Procesando imagen: thomas-ruff-portraits_clean.png
-2025-11-30 21:28:18,465 - INFO - [align_all_images_from_df] [→] Alineando imagen: thomas-ruff-portraits_clean.png
-2025-11-30 21:28:24,563 - INFO - [align_all_images_from_df] [✔] Imagen alineada generada: thomas-ruff-portraits_clean_01.png
-2025-11-30 21:28:24,563 - INFO - [project_single_image] [→] Proyectando imagen única: images/testing_modification/thomas-ruff-portraits_clean.png.
-2025-11-30 21:30:23,490 - INFO - [project_single_image] [✔] Proyección completada: thomas-ruff-portraits_clean.png
-2025-11-30 21:30:23,493 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_HA.npz.
-2025-11-30 21:30:27,690 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_HA.npz.
-2025-11-30 21:30:27,690 - INFO - [modify_image] [✔] Generada imagen modificada (HA) → thomas-ruff-portraits_clean_mod_HA.png
-2025-11-30 21:30:27,691 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_AN.npz.
-2025-11-30 21:30:31,911 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_AN.npz.
-2025-11-30 21:30:31,912 - INFO - [modify_image] [✔] Generada imagen modificada (AN) → thomas-ruff-portraits_clean_mod_AN.png
-2025-11-30 21:30:31,915 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_DI.npz.
-2025-11-30 21:30:36,189 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_DI.npz.
-2025-11-30 21:30:36,189 - INFO - [modify_image] [✔] Generada imagen modificada (DI) → thomas-ruff-portraits_clean_mod_DI.png
-2025-11-30 21:30:36,191 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_FE.npz.
-2025-11-30 21:30:40,369 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_FE.npz.
-2025-11-30 21:30:40,369 - INFO - [modify_image] [✔] Generada imagen modificada (FE) → thomas-ruff-portraits_clean_mod_FE.png
-2025-11-30 21:30:40,369 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SA.npz.
-2025-11-30 21:30:44,591 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SA.npz.
-2025-11-30 21:30:44,591 - INFO - [modify_image] [✔] Generada imagen modificada (SA) → thomas-ruff-portraits_clean_mod_SA.png
-2025-11-30 21:30:44,592 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SU.npz.
-2025-11-30 21:30:48,760 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SU.npz.
-2025-11-30 21:30:48,761 - INFO - [modify_image] [✔] Generada imagen modificada (SU) → thomas-ruff-portraits_clean_mod_SU.png
-2025-11-30 21:30:48,761 - INFO - 🖼️ Finalizó modificación de imagen en la carpeta: images/testing_modification
+2025-11-30 22:47:41,008 - INFO - --- Argumentos Globales ---
+2025-11-30 22:47:41,008 - INFO - Modo seleccionado: modify_image
+2025-11-30 22:47:41,008 - INFO - Logging activo: True
+2025-11-30 22:47:41,008 - INFO - Verbose: True
+2025-11-30 22:47:41,008 - INFO - ---------------------------
+2025-11-30 22:47:41,037 - INFO - 🖼️ Modificando imagen en la carpeta: images/testing_modification
+2025-11-30 22:47:41,039 - INFO - [modify_image] [→] Procesando imagen: vicko_clean.png
+2025-11-30 22:47:41,039 - INFO - [align_all_images_from_df] [→] Alineando imagen: vicko_clean.png
+2025-11-30 22:47:48,584 - INFO - [align_all_images_from_df] [✔] Imagen alineada generada: vicko_clean_01.png
+2025-11-30 22:47:48,584 - INFO - [project_single_image] [→] Proyectando imagen única: images/testing_modification/vicko_clean.png.
+2025-11-30 22:49:47,534 - INFO - [project_single_image] [✔] Proyección completada: vicko_clean.png
+2025-11-30 22:49:47,538 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_HA.npz.
+2025-11-30 22:49:51,706 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_HA.npz.
+2025-11-30 22:49:51,706 - INFO - [modify_image] [✔] Generada imagen modificada (HA) → vicko_clean_mod_HA
+2025-11-30 22:49:51,706 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_AN.npz.
+2025-11-30 22:49:55,862 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_AN.npz.
+2025-11-30 22:49:55,863 - INFO - [modify_image] [✔] Generada imagen modificada (AN) → vicko_clean_mod_AN
+2025-11-30 22:49:55,865 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_DI.npz.
+2025-11-30 22:50:00,138 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_DI.npz.
+2025-11-30 22:50:00,139 - INFO - [modify_image] [✔] Generada imagen modificada (DI) → vicko_clean_mod_DI
+2025-11-30 22:50:00,141 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_FE.npz.
+2025-11-30 22:50:04,420 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_FE.npz.
+2025-11-30 22:50:04,420 - INFO - [modify_image] [✔] Generada imagen modificada (FE) → vicko_clean_mod_FE
+2025-11-30 22:50:04,421 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_SA.npz.
+2025-11-30 22:50:08,560 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_SA.npz.
+2025-11-30 22:50:08,560 - INFO - [modify_image] [✔] Generada imagen modificada (SA) → vicko_clean_mod_SA
+2025-11-30 22:50:08,561 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/vicko_clean_mod_SU.npz.
+2025-11-30 22:50:12,725 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/vicko_clean_mod_SU.npz.
+2025-11-30 22:50:12,725 - INFO - [modify_image] [✔] Generada imagen modificada (SU) → vicko_clean_mod_SU
+2025-11-30 22:50:12,725 - INFO - [modify_image] [→] Procesando imagen: thomas-ruff-portraits_clean.png
+2025-11-30 22:50:12,725 - INFO - [align_all_images_from_df] [→] Alineando imagen: thomas-ruff-portraits_clean.png
+2025-11-30 22:50:23,566 - INFO - [align_all_images_from_df] [✔] Imagen alineada generada: thomas-ruff-portraits_clean_01.png
+2025-11-30 22:50:23,566 - INFO - [project_single_image] [→] Proyectando imagen única: images/testing_modification/thomas-ruff-portraits_clean.png.
+2025-11-30 22:52:22,380 - INFO - [project_single_image] [✔] Proyección completada: thomas-ruff-portraits_clean.png
+2025-11-30 22:52:22,381 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_HA.npz.
+2025-11-30 22:52:26,601 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_HA.npz.
+2025-11-30 22:52:26,602 - INFO - [modify_image] [✔] Generada imagen modificada (HA) → thomas-ruff-portraits_clean_mod_HA
+2025-11-30 22:52:26,603 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_AN.npz.
+2025-11-30 22:52:30,839 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_AN.npz.
+2025-11-30 22:52:30,839 - INFO - [modify_image] [✔] Generada imagen modificada (AN) → thomas-ruff-portraits_clean_mod_AN
+2025-11-30 22:52:30,840 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_DI.npz.
+2025-11-30 22:52:35,102 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_DI.npz.
+2025-11-30 22:52:35,102 - INFO - [modify_image] [✔] Generada imagen modificada (DI) → thomas-ruff-portraits_clean_mod_DI
+2025-11-30 22:52:35,103 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_FE.npz.
+2025-11-30 22:52:39,323 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_FE.npz.
+2025-11-30 22:52:39,323 - INFO - [modify_image] [✔] Generada imagen modificada (FE) → thomas-ruff-portraits_clean_mod_FE
+2025-11-30 22:52:39,324 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SA.npz.
+2025-11-30 22:52:43,552 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SA.npz.
+2025-11-30 22:52:43,552 - INFO - [modify_image] [✔] Generada imagen modificada (SA) → thomas-ruff-portraits_clean_mod_SA
+2025-11-30 22:52:43,553 - INFO - [generate_one_image_from_npz] [→] Generando imagen para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SU.npz.
+2025-11-30 22:52:47,805 - INFO - [generate_one_image_from_npz] [✔] Imagen generada para el npz: images/testing_modification/thomas-ruff-portraits_clean_mod_SU.npz.
+2025-11-30 22:52:47,805 - INFO - [modify_image] [✔] Generada imagen modificada (SU) → thomas-ruff-portraits_clean_mod_SU
+2025-11-30 22:52:47,805 - INFO - 🖼️ Finalizó modificación de imagen en la carpeta: images/testing_modification

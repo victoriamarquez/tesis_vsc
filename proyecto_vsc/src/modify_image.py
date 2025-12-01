@@ -62,9 +62,9 @@ def modify_image(args):
             w_mod = w + intensity * direction_18
 
             out_w_path = img_path.with_name(img_path.stem + f"_mod_{emo}.npz")
-            out_img_path = img_path.with_name(img_path.stem + f"_mod_{emo}.png")
+            out_img_path = img_path.with_name(img_path.stem + f"_mod_{emo}")
 
-            logging.debug(f"[modify_image] Out path npz {out_w_path} out path img {out_img_path}.")
+            logging.debug(f"[modify_image] Out path npz {out_w_path} out folder img {out_img_path}.")
 
             np.savez(str(out_w_path), w=w_mod)
             generate_one_image_from_npz(out_w_path, out_img_path)
