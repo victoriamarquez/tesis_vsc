@@ -1,8 +1,10 @@
 import argparse
+import gc
 import logging
-import sys
+import torch
 
 from calculate_vectors import calculate_vectors
+from modify_image import modify_image
 from testing import execute_tests
 
 def main():
@@ -41,8 +43,7 @@ def main():
     # --- Modo 1: calculate vectors ---
     parser_calculate = subparsers.add_parser(
         'calculate_vectors',
-        help='Calcula los vectores correspondientes a cada emoción y los almacena en el archivo [COMPLETAR].'
-        #TODO: Completar el archivo en el que lo almaceno
+        help='Calcula los vectores correspondientes a cada emoción y los almacena en el archivo datos/directions_regression.csv.'
     )
     # Este modo no necesita argumentos específicos adicionales.
 
@@ -58,6 +59,19 @@ def main():
         help='Ruta a la carpeta que contiene la imagen a modificar.'
     )
 
+    parser_modify.add_argument(
+        "--emotion",
+        type=str,
+        choices=["HA", "AN", "DI", "FE", "SA", "SU"],
+        help="Emoción a modificar."
+    )
+
+    parser_modify.add_argument(
+        "--intensity",
+        type=float,
+        help="Intensidad del cambio emocional."
+    )
+
     # --- Modo 3: test ---
     parser_test = subparsers.add_parser(
         'test',
@@ -69,7 +83,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig( 
-        level=logging.DEBUG if args.logging==True else logging.ERROR,           
+        level=logging.INFO if args.logging==True else logging.ERROR,           
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
             logging.FileHandler("tesis.log", mode='w'),  # Logs to a file named tesis.log, clears on start
@@ -83,17 +97,21 @@ def main():
     logging.info(f'Verbose: {args.verbose}')
     logging.info('---------------------------')
 
+    gc.collect()
+    torch.cuda.empty_cache()
+
     # Lógica para cada modo (usando el atributo 'mode' de args)
     if args.mode == 'calculate_vectors':
         logging.info("🛠️ Ejecutando el cálculo de vectores...")
-        calculate_vectors(align=True, process=True, generate=True, verbose=args.verbose)
+        calculate_vectors(align=False, process=True, generate=False)
         logging.info("🛠️ Finalizó ejecución calculate_vectors")
         pass
     
     elif args.mode == 'modify_image':
-        logging.info(f"🖼️ Modificando imagen en la carpeta: **{args.input_folder}**")
         # El parámetro 'input_folder' solo está disponible cuando 'mode' es 'modify_image'
-        logging.info(f"🖼️ Finalizó modificación de imagen en la carpeta: **{args.input_folder}**")
+        logging.info(f"🖼️ Modificando imagen en la carpeta: {args.input_folder}")
+        modify_image(args)
+        logging.info(f"🖼️ Finalizó modificación de imagen en la carpeta: {args.input_folder}")
         pass
         
     elif args.mode == 'test':
@@ -103,7 +121,4 @@ def main():
         pass
 
 if __name__ == '__main__':
-    # Esto permite que el script se ejecute directamente
-    # Si quisieras simular la ejecución de la línea de comandos, usa:
-    # args = parser.parse_args(['modify_image', '/home/user/images', '--no-logging'])
     main()

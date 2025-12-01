@@ -1,53 +1,42 @@
-
-import gc
-import os
 import numpy as np
 import pandas as pd
-import torch
 import logging
 
-from helpers import getNPZ, optional_print, save_modified_npz, check_alineadas, check_npz
-from image_pre_processing import construir_dataframe_imagenes
-from image_processing import align_all_images_from_df, generate_all_images, process_all_images
-from diverse_group_testing import generate_diverse_testing_subset, generate_modified_emotion_images
+from helpers import getNPZ
+from image_processing import build_image_dataframe, align_all_images_from_df, generate_all_images, process_all_images
 from lineal_regression import compute_emotion_direction_regression
 from method_comparison import compare_directions_cosine
 from pca import compute_emotion_direction_pca
 
-def calculate_vectors(align=False, process=False, generate=False, verbose=True):
-    logging.info("_____________[INICIANDO EJECUCIÓN]_____________")
-
-    gc.collect()
-    torch.cuda.empty_cache()
+def calculate_vectors(align=False, process=False, generate=False):
+    logging.info("[calculate_vectors] [→] Iniciando pipeline.")
 
     # Define the base directory
     base_dir = "/home/vicky/Documents/BU_3DFE"
 
-    metadatos_df = construir_dataframe_imagenes(base_dir)
+    metadatos_df = build_image_dataframe(base_dir)
     metadatos_df.to_csv("/home/vicky/Documents/tesis_vsc/datos/metadatos.csv", index=False)
     
     if(align):
-        logging.info("_____________[ALINEANDO]_____________")
+        logging.info("[calculate_vectors] [→] Alineando imágenes.")
         align_all_images_from_df(
             df=metadatos_df,
             script_path="/home/vicky/Documents/tesis_vsc/stylegan2encoder/align_images.py",
-            output_path="/home/vicky/Documents/tesis_vsc/images/aligned_images",
-            verbose=True
+            output_path="/home/vicky/Documents/tesis_vsc/images/aligned_images"
         )
-        logging.info("_____________[ALINEADO]_____________")   
+        logging.info("[calculate_vectors] [✔] Imágenes alineadas.")   
     if(process):
-        logging.info("_____________[PROCESANDO]_____________")
-        #process_all_images_from_df(metadatos_df, steps=200, verbose=True, max_images=3)
-        process_all_images('/home/vicky/Documents/tesis_vsc/images/aligned_images', 1000, verbose) ## Vamos a hacer de cuenta que esto está bien porque no sé cómo arreglarlo
-        logging.info("_____________[PROCESADO]_____________")
+        logging.info("[calculate_vectors] [→] Proyectando imágenes a npz.")
+        process_all_images('/home/vicky/Documents/tesis_vsc/images/aligned_images', 1000)
+        logging.info("[calculate_vectors] [✔] Imágenes proyectadas a npz.")
     if(generate):
-        logging.info("_____________[GENERANDO]_____________")
-        generate_all_images(verbose)
-        logging.info("_____________[GENERADO]_____________")
+        logging.info("[calculate_vectors] [→] Generando imágenes a partir de npz.")
+        generate_all_images()
+        logging.info("[calculate_vectors] [✔] Imágenes generadas a partir de npz.")
     
-    #logging.info(f"_____________[ALINEADAS CHECK] {check_alineadas(metadatos_df, False)}_____________")
-    #logging.info(f"_____________[NPZ CHECK] {check_npz(metadatos_df, False)[0]}_____________")
+
     metadatos_df['latent_vector'] = metadatos_df['file_name'].apply(getNPZ)
+    metadatos_df.to_csv("/home/vicky/Documents/tesis_vsc/datos/metadatos.csv", index=False)
     metadatos_df.to_pickle("datos/metadatos_con_vectores.pkl")
     metadatos_df = pd.read_pickle("datos/metadatos_con_vectores.pkl")
     
@@ -102,5 +91,5 @@ def calculate_vectors(align=False, process=False, generate=False, verbose=True):
 
     # generate_testing_images_for_multipliers(metadatos_df, directions_pca, directions_regression)
 
-    logging.info("_____________[EJECUCIÓN FINALIZADA]_____________")
+    logging.info("[calculate_vectors] [✔] Ejecución de pipeline finalizada.")
 

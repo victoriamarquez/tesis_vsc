@@ -8,6 +8,33 @@ from image_processing import generate_one_image_from_npz
 
 
 def plot_emotion_directions_grid(df, directions_pca, directions_regression, similarities, emotion_codes):
+    """
+    [NO USADA!?]
+    Genera una cuadrícula de gráficos que comparan las direcciones de emoción obtenidas 
+    por PCA y Regresión Lineal contra las diferencias reales en el espacio latente.
+
+    Para cada emoción:
+    1. Calcula el vector de diferencia (emoción - neutro, con intensidad '04') para cada persona.
+    2. Utiliza PCA para reducir los vectores de diferencia a 2D.
+    3. Proyecta las direcciones PCA y de Regresión Lineal al mismo espacio 2D.
+    4. Grafica las diferencias reales (puntos dispersos) y las direcciones de los métodos (flechas).
+    5. Muestra la similitud coseno entre las dos direcciones calculadas en el título.
+
+    Args:
+        df (pandas.DataFrame): DataFrame de metadatos con la columna 'latent_vector', 
+            incluyendo las columnas 'person_id', 'emotion', 'is_neutral' e 'intensity'.
+        directions_pca (dict): Diccionario de vectores de dirección obtenidos por PCA 
+            (clave: código de emoción, valor: np.ndarray).
+        directions_regression (dict): Diccionario de vectores de dirección obtenidos por 
+            Regresión Lineal (clave: código de emoción, valor: np.ndarray).
+        similarities (dict): Diccionario que contiene la similitud coseno entre los 
+            vectores de PCA y Regresión Lineal para cada emoción.
+        emotion_codes (list): Lista de códigos de emoción a graficar (ej. ['HA', 'AN', ...]).
+
+    Returns:
+        None: La función muestra el gráfico y lo guarda como un archivo PNG.
+    """
+
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
     axes = axes.flatten()
 
@@ -69,13 +96,49 @@ def plot_emotion_directions_grid(df, directions_pca, directions_regression, simi
     plt.show()
 
 def compare_directions_cosine(dir1, dir2):
-        v1 = np.array(dir1).reshape(1, -1)
-        v2 = np.array(dir2).reshape(1, -1)
-        sim = cosine_similarity(v1, v2)[0, 0]
-        return sim
+    """Calcula la similitud coseno entre dos vectores de dirección latente.
 
+    Usada en calculate_vectors para el cálculo de similutudes coseno.
+    
+    La similitud coseno mide el coseno del ángulo entre dos vectores, indicando 
+    qué tan similar es la dirección de ambos, ignorando su magnitud. 
+    Un valor cercano a 1 indica alta similitud direccional.
+
+    Args:
+        dir1 (array-like): Primer vector de dirección (numpy.ndarray o lista).
+        dir2 (array-like): Segundo vector de dirección (numpy.ndarray o lista).
+
+    Returns:
+        float: El valor de la similitud coseno entre los dos vectores.
+    """
+    v1 = np.array(dir1).reshape(1, -1)
+    v2 = np.array(dir2).reshape(1, -1)
+    sim = cosine_similarity(v1, v2)[0, 0]
+    return sim
 
 def generate_testing_images_for_multipliers(metadatos_df, directions_pca, directions_regression):
+    """
+    [LEGACY]
+    Genera una serie de imágenes sintéticas aplicando direcciones emocionales con 
+    diferentes niveles de intensidad (multiplicadores).
+
+    La función toma una única imagen neutra de referencia (iloc[2]), aplica las 
+    direcciones obtenidas por PCA y Regresión Lineal, escalándolas con un rango 
+    predeterminado de multiplicadores para cada método. Esto permite visualizar y 
+    comparar el efecto de la intensidad y la calidad de la dirección de cada método.
+
+    Args:
+        metadatos_df (pandas.DataFrame): DataFrame de metadatos de imágenes (con la 
+            columna 'latent_vector' y 'is_neutral') para seleccionar la imagen base neutra.
+        directions_pca (dict): Diccionario de vectores de dirección obtenidos por PCA.
+        directions_regression (dict): Diccionario de vectores de dirección obtenidos 
+            por Regresión Lineal.
+
+    Returns:
+        None: La función guarda archivos .npz y genera las imágenes PNG correspondientes 
+            en sus directorios de salida.
+    """
+
     output_npz_dir = "images/processed_images"
     os.makedirs(output_npz_dir, exist_ok=True)
 
@@ -86,8 +149,8 @@ def generate_testing_images_for_multipliers(metadatos_df, directions_pca, direct
 
     # Imagen base neutra
     neutrals = metadatos_df[metadatos_df["is_neutral"] == True]
-    sample_row = neutrals.iloc[2]  ## Acá se puede cambiar la imagen neutra que se usa de base
-    base_w = sample_row["latent_vector"] ## Acá NO HAY QUE NORMALIZAR porque manda la imagen al centro del espacio.
+    sample_row = neutrals.iloc[2]  # Acá se puede cambiar la imagen neutra que se usa de base
+    base_w = sample_row["latent_vector"] # Acá NO HAY QUE NORMALIZAR porque manda la imagen al centro del espacio.
     print(f"Shape neutral vector: {base_w.shape}")
     print(f"GENERATING FROM PERSON {sample_row['person_id']}")
 

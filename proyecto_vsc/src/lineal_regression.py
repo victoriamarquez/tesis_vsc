@@ -2,9 +2,40 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 
 # ----------------------------------
-# Función 2: Regresión lineal sobre diferencias neutro - emociones 01 a 04
+# Regresión lineal sobre diferencias neutro - emociones 01 a 04
 # ----------------------------------
 def compute_emotion_direction_regression(df, emotion_code):
+    """Calcula el vector de dirección latente de una emoción usando regresión lineal.
+
+    La función opera en el espacio latente (`latent_vector`) y busca la dirección 
+    óptima que correlacione la diferencia entre el vector de una imagen emocional 
+    y su correspondiente vector neutro con la intensidad numérica de la emoción.
+
+    Proceso:
+    1. Filtra las imágenes emocionales para un `emotion_code` dado.
+    2. Agrupa por `person_id`.
+    3. Para cada persona, calcula el vector de diferencia: $V_{emocional} - V_{neutro}$.
+    4. Usa las diferencias vectoriales como características ($X$) y la intensidad 
+       numérica (1 a 4) como variable objetivo ($y$).
+    5. Ajusta un modelo de regresión lineal ($\mathbf{y} = \mathbf{X} \cdot \mathbf{w}$) 
+       para encontrar el vector de pesos $\mathbf{w}$ que mejor predice la intensidad.
+
+    Args:
+        df (pandas.DataFrame): DataFrame que contiene los metadatos de las imágenes, 
+            incluyendo las columnas 'emotion', 'person_id', 'is_neutral', 'intensity' 
+            y 'latent_vector' (el vector 'w' proyectado, shape (512,)).
+        emotion_code (str): Código de dos letras de la emoción a analizar (ej. 'HA', 'AN', 'DI').
+
+    Returns:
+        numpy.ndarray: El vector de dirección latente (`lr.coef_`) de la emoción, 
+            que representa el cambio en el espacio latente asociado con un aumento 
+            de una unidad en la intensidad de la emoción (shape (512,)).
+
+    Raises:
+        ValueError: Si no se encuentran suficientes datos (pares neutro-emocional con 
+            intensidades 01 a 04) para la emoción especificada.
+    """
+
     X = []
     y = []
 
