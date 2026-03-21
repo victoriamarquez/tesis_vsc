@@ -1,8 +1,10 @@
 import logging
+import os
 import pandas as pd
 
 from diverse_group_testing import generate_diverse_testing_subset, generate_modified_emotion_images
-from celeba_processing import load_celeba_attributes, process_emotions_celeba, project_selected_celeba_images_from_df
+from celeba_helpers import align_celeba_candidates, load_celeba_attributes
+from celeba_processing import process_emotions_celeba, project_selected_celeba_images_from_df
 from helpers import getNPZ
 
 multiplicadores = {
@@ -57,15 +59,32 @@ def execute_tests():
     )
     logging.info("[execute_tests] [✔] Pruebas subset diversidad finalizadas.")
 
-    logging.info("[execute_tests] [→] Iniciando pruebas con dataset CelebA.")
-    celeba_df = load_celeba_attributes("/home/vicky/Documents/tesis_vsc/list_attr_celeba.txt")
-    celeba_neutral_df = celeba_df[(celeba_df['Smiling'] == -1) & (celeba_df['Eyeglasses'] == -1) & (celeba_df['Blurry'] == -1)]
-    celeba_sample_df = celeba_neutral_df.sample(n=10, random_state=42) # Elegimos 10 imágenes al azar para probar
-    project_selected_celeba_images_from_df(celeba_sample_df, 1000)
+    logging.info("[execute_tests] [→] Iniciando pruebas con dataset CelebA (candidatas alineadas).")
+
+    candidatas_dir = "/home/vicky/Documents/tesis_vsc/images/CelebA/candidatas_revision"
+    aligned_dir = "/home/vicky/Documents/tesis_vsc/images/CelebA/candidatas_aligned"
+    npz_dir_host = "/home/vicky/Documents/tesis_vsc/images/CelebA/npz_candidatas_aligned"
+    npz_dir_docker = "images/CelebA/npz_candidatas_aligned"
+
+    align_celeba_candidates(candidatas_dir, aligned_dir)
+
+    # Construir dataframe con las imágenes alineadas generadas
+    aligned_filenames = [f for f in os.listdir(aligned_dir) if f.endswith(".png")]
+    aligned_df = pd.DataFrame({"file_name": aligned_filenames})
+
+    project_selected_celeba_images_from_df(
+        df=aligned_df,
+        steps=1000,
+        input_dir_docker="images/CelebA/candidatas_aligned",
+        output_dir_host=npz_dir_host,
+        output_dir_docker=npz_dir_docker,
+    )
 
     process_emotions_celeba(
         emotion_vectors=directions_regression,
         multiplicadores=multiplicadores,
-        max_imagenes=10  # opcional para probar con pocas imágenes
+        npz_input_dir=npz_dir_host,
+        output_npz_dir="images/CelebA/npz_emotion_candidatas",
+        output_img_dir="/scratch/images/CelebA/img_emotion_candidatas",
     )
     logging.info("[execute_tests] [✔] Pruebas con dataset CelebA finalizadas.")

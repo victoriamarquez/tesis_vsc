@@ -31,23 +31,13 @@ Los dos cambios a probar son: (a) pasar CelebA por el alineador de StyleGAN, y
   candidatas descartando: `Blurry=1`, `Wearing_Hat=1`, `Eyeglasses=1`, `Smiling=1`.
   → Implementado en `proyecto_vsc/src/filter_celeba_candidates.py`. Genera copia de
   las imágenes seleccionadas + galería HTML para revisión visual + `candidatas.txt`.
-- [ ] **[ejecución]** Correr `filter_celeba_candidates.py` en la compu remota con `--n 20`:
-  ```bash
-  python filter_celeba_candidates.py \
-      --attr-file /home/vicky/Documents/tesis_vsc/list_attr_celeba.txt \
-      --images-dir /home/vicky/Documents/tesis_vsc/images/CelebA/img_align_celeba \
-      --output-dir /home/vicky/Documents/tesis_vsc/images/CelebA/candidatas_revision \
-      --n 20
-  ```
-- [ ] **[manual]** Copiar la carpeta de salida a tu máquina local con `scp`:
-  ```bash
-  scp -r vicky@<ip>:/home/vicky/Documents/tesis_vsc/images/CelebA/candidatas_revision ./
-  ```
-- [ ] **[manual]** Revisar las ~100 imágenes manualmente (ya en tu compu local) y elegir
-  las que sean realmente frontales y de buena calidad. Seleccionar un subconjunto final
-  (sugerencia: 20–50 imágenes).
-- [ ] **[código]** Generar la lista definitiva de nombres de archivo para las imágenes
-  seleccionadas (un `.txt`, una por línea) y commitearla al repo para no perderla.
+- [x] **[ejecución]** Correr `filter_celeba_candidates.py` con `--n 100` para obtener
+  candidatas suficientes para revisión manual.
+- [x] **[manual]** Copiar la carpeta de salida a la máquina local con `scp` y revisar
+  la galería HTML.
+- [x] **[manual]** Seleccionar subconjunto final → **50 imágenes** guardadas en
+  `images/CelebA/candidatas_revision/candidatas.txt`. Las 50 imágenes no seleccionadas
+  fueron eliminadas de la carpeta.
 
 ### 1.2 Preparación de las imágenes
 

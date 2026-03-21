@@ -1,51 +1,21 @@
 import logging
 import os
 import subprocess
-import pandas as pd
 import numpy as np
 from numpy import load, savez
 from pathlib import Path
 from glob import glob
 
 from image_processing import generate_one_image_from_npz
+from celeba_helpers import load_celeba_attributes, align_celeba_candidates
 
-def load_celeba_attributes(attr_path):
-    """Carga los atributos faciales del dataset CelebA desde el archivo de texto provisto.
-
-    El archivo de atributos se espera que tenga el formato estándar de CelebA, 
-    donde las primeras dos líneas contienen metadatos y la tercera línea comienza 
-    con los datos de las imágenes (nombre de archivo seguido de los atributos binarios).
-
-    Args:
-        attr_path (str): Ruta al archivo de texto que contiene los atributos de CelebA.
-
-    Returns:
-        pandas.DataFrame: Un DataFrame con la columna 'file_name' y una columna 
-            para cada uno de los atributos faciales (ej. 'Male', 'Smiling'), 
-            con valores -1 (Ausente) o 1 (Presente).
-    """
-    logging.info(f"[CelebA] [→] Cargando atributos CelebA desde archivo.")
-
-    with open(attr_path, 'r') as f:
-        lines = f.readlines()
-
-    # La segunda línea contiene los nombres de los atributos
-    attribute_names = lines[1].strip().split()
-
-    # Las siguientes líneas contienen los datos: filename seguido de los atributos
-    data = []
-    for line in lines[2:]:
-        parts = line.strip().split()
-        filename = parts[0]
-        attributes = list(map(int, parts[1:]))  # convierte de str a int
-        data.append([filename] + attributes)
-
-    # Crear el DataFrame
-    df = pd.DataFrame(data, columns=['file_name'] + attribute_names)
-    logging.info("[CelebA] [✔] Atributos CelebA cargados desde archivo.")
-    return df
-
-def project_selected_celeba_images_from_df(df, steps):
+def project_selected_celeba_images_from_df(
+    df,
+    steps,
+    input_dir_docker="images/CelebA/img_align_celeba",
+    output_dir_host="/home/vicky/Documents/tesis_vsc/images/CelebA/npz_align_celeba",
+    output_dir_docker="images/CelebA/npz_align_celeba",
+):
     """Proyecta un subconjunto de imágenes de CelebA en el espacio latente de StyleGAN2-ADA.
 
     La función itera sobre los nombres de archivo presentes en la columna 'file_name' 
@@ -58,10 +28,13 @@ def project_selected_celeba_images_from_df(df, steps):
             `"file_name"` con los nombres de las imágenes de CelebA a proyectar.
         steps (int): Número de pasos de optimización a utilizar para la proyección 
             de cada imagen.
+        input_dir_docker (str): Ruta al directorio de entrada tal como la ve el contenedor Docker.
+        output_dir_host (str): Ruta al directorio de salida en el host (para crearlo si no existe).
+        output_dir_docker (str): Ruta al directorio de salida tal como la ve el contenedor Docker.
 
     Returns:
         None: La función no devuelve nada, pero genera archivos .npz en el directorio 
-            de salida configurado internamente.
+            de salida configurado.
 
     Raises:
         subprocess.CalledProcessError: Si la ejecución del comando de proyección 
@@ -69,12 +42,9 @@ def project_selected_celeba_images_from_df(df, steps):
     """
 
     logging.info(f"[CelebA] [→] Proyectando {len(df)} imágenes.")
-    # Path base en el host
-    base_output_host = "/home/vicky/Documents/tesis_vsc/images/CelebA/npz_align_celeba"
-
-    # Path que ve el contenedor
-    base_input_docker = "images/CelebA/img_align_celeba"
-    base_output_docker = "images/CelebA/npz_align_celeba"
+    base_output_host = output_dir_host
+    base_input_docker = input_dir_docker
+    base_output_docker = output_dir_docker
 
     # Crear output dir si no existe
     os.makedirs(base_output_host, exist_ok=True)
@@ -145,7 +115,14 @@ def modify_latent_with_emotion(npz_path, emotion, emotion_vectors, multiplier, o
     savez(path_salida, w=w_modificado)
     return path_salida  # lo devolvemos para usarlo después con generate_one_image_from_npz
 
-def process_emotions_celeba(emotion_vectors, multiplicadores, max_imagenes=None):
+def process_emotions_celeba(
+    emotion_vectors,
+    multiplicadores,
+    max_imagenes=None,
+    npz_input_dir="/home/vicky/Documents/tesis_vsc/images/CelebA/npz_align_celeba",
+    output_npz_dir="images/CelebA/npz_emotion_celeba",
+    output_img_dir="/scratch/images/CelebA/img_emotion_celeba",
+):
     """
     Aplica vectores emocionales a los NPZ de CelebA, guarda los nuevos NPZ 
     y genera las imágenes resultantes.
@@ -172,7 +149,7 @@ def process_emotions_celeba(emotion_vectors, multiplicadores, max_imagenes=None)
     """
 
     # Obtener lista de .npz a procesar
-    npz_paths = sorted(glob(os.path.join("/home/vicky/Documents/tesis_vsc/images/CelebA/npz_align_celeba", "*.npz")))
+    npz_paths = sorted(glob(os.path.join(npz_input_dir, "*.npz")))
     logging.info(f"[CelebA] [→] Modificando npz y generando imágenes para {len(npz_paths)} archivos.")
 
     if max_imagenes is not None:
@@ -190,14 +167,14 @@ def process_emotions_celeba(emotion_vectors, multiplicadores, max_imagenes=None)
                 emotion=emotion,
                 emotion_vectors=emotion_vectors,
                 multiplier=multiplicador,
-                output_dir="images/CelebA/npz_emotion_celeba"
+                output_dir=output_npz_dir,
             )
 
-            logging.debug(f"[CelebA] Llamando generate_one_image_from_npz con parámetros: \n npz_path={nuevo_npz}, \n outdir_path=/scratch/CelebA/img_emotion_celeba")
-            # Llamar a la función de generación
+            logging.debug(f"[CelebA] Llamando generate_one_image_from_npz con parámetros: \n npz_path={nuevo_npz}, \n outdir_path={output_img_dir}")
             generate_one_image_from_npz(
                 npz_path=nuevo_npz,
-                outdir_path="/scratch/images/CelebA/img_emotion_celeba"
+                outdir_path=output_img_dir,
             )
     logging.info(f"[CelebA] [✔] Generación de imágenes finalizada para {len(npz_paths)} archivos.")
+
 
