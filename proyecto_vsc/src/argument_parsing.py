@@ -77,7 +77,12 @@ def main():
         'test',
         help='Ejecuta pruebas del sistema.'
     )
-    # Este modo no necesita argumentos específicos adicionales.
+    parser_test.add_argument(
+        '--celeba-only',
+        action='store_true',
+        default=False,
+        help='Ejecuta solo las pruebas de CelebA, omitiendo el subset de diversidad.'
+    )
 
     # 3. Análisis de Argumentos y Uso
     args = parser.parse_args()
@@ -116,7 +121,7 @@ def main():
         
     elif args.mode == 'test':
         logging.info("✅ Ejecutando pruebas...")
-        execute_tests()
+        execute_tests(celeba_only=args.celeba_only)
         logging.info("✅ Finalizó ejecución de pruebas.")
         pass
 

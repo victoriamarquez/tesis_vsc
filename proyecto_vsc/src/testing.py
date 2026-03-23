@@ -16,48 +16,32 @@ multiplicadores = {
         'SU': 4.5
     }
 
-def execute_tests():
+def execute_tests(celeba_only=False):
     """
     Ejecuta un conjunto predefinido de pruebas de manipulación emocional sobre 
     diferentes datasets (propio y CelebA).
 
-    La función carga los metadatos de las imágenes proyectadas, incluyendo los 
-    vectores latentes, y los vectores de dirección emocional obtenidos por 
-    Regresión Lineal (`directions_regression`). Luego, puede ejecutar dos bloques 
-    de pruebas:
-
-    1. **Prueba de Diversidad:** Genera un subconjunto diverso de imágenes neutras
-        y aplica las direcciones emocionales sobre ellas.
-    2. **Prueba de CelebA:** Procesa un subconjunto de imágenes neutras de CelebA, 
-       realiza la proyección inicial de esas imágenes y luego aplica las direcciones 
-       emocionales calculadas para sintetizar nuevas imágenes.
-
-    Returns:
-        None: La función no devuelve un valor, pero genera numerosos archivos .npz 
-            (vectores latentes modificados) y archivos .png (imágenes sintetizadas) 
-            en directorios de salida predefinidos.
-
-    Notes:
-        Depende de funciones auxiliares como `getNPZ`, `generate_diverse_testing_subset`, 
-        `generate_modified_emotion_images`, `load_celeba_attributes`, 
-        `process_selected_celeba_images_from_df` y `process_emotions_celeba`.
+    Args:
+        celeba_only (bool): Si es True, omite las pruebas del subset diverso y
+            ejecuta solo la parte de CelebA. Útil para iterar más rápido sobre
+            el experimento de CelebA sin esperar el bloque de diversidad.
     """
 
-    metadatos_df = pd.read_csv("/home/vicky/Documents/tesis_vsc/datos/metadatos.csv")
-    metadatos_df['latent_vector'] = metadatos_df['file_name'].apply(getNPZ)
-    
     directions_regression = pd.read_csv("/home/vicky/Documents/tesis_vsc/datos/directions_regression.csv")
-    
-    logging.info("[execute_tests] [→] Iniciando pruebas subset diversidad.")
-    diverse_subset = generate_diverse_testing_subset(metadatos_df)
 
-    generate_modified_emotion_images(
-        subset_df=diverse_subset,
-        directions_dict=directions_regression,
-        emotion_multipliers=multiplicadores,
-        method_name="LR"
-    )
-    logging.info("[execute_tests] [✔] Pruebas subset diversidad finalizadas.")
+    if not celeba_only:
+        metadatos_df = pd.read_csv("/home/vicky/Documents/tesis_vsc/datos/metadatos.csv")
+        metadatos_df['latent_vector'] = metadatos_df['file_name'].apply(getNPZ)
+
+        logging.info("[execute_tests] [→] Iniciando pruebas subset diversidad.")
+        diverse_subset = generate_diverse_testing_subset(metadatos_df)
+        generate_modified_emotion_images(
+            subset_df=diverse_subset,
+            directions_dict=directions_regression,
+            emotion_multipliers=multiplicadores,
+            method_name="LR"
+        )
+        logging.info("[execute_tests] [✔] Pruebas subset diversidad finalizadas.")
 
     logging.info("[execute_tests] [→] Iniciando pruebas con dataset CelebA (candidatas alineadas).")
 
