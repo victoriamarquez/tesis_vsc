@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 
 import pandas as pd
+from PIL import Image
 
 
 def load_celeba_attributes(attr_path):
@@ -52,3 +53,36 @@ def align_celeba_candidates(input_dir, output_dir):
     command = ["python3", script_path, str(input_dir), str(output_dir)]
     subprocess.run(command, check=True)
     logging.info(f"[CelebA] [✔] Alineación completada. Imágenes en {output_dir}.")
+
+
+def replace_background_with_black(input_dir, output_dir):
+    """Reemplaza el fondo de las imágenes alineadas con negro sólido usando rembg.
+
+    Útil para aislar el efecto del fondo en la proyección y modificación emocional:
+    las imágenes de BU-3DFE tienen fondo negro, y queremos ver si homogeneizar el
+    fondo de CelebA mejora los resultados.
+
+    rembg se importa de forma lazy para no romper el entorno si no está instalado.
+
+    Args:
+        input_dir (str): Carpeta con las imágenes alineadas (.png).
+        output_dir (str): Carpeta donde guardar las imágenes con fondo negro.
+    """
+    from rembg import remove
+
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    image_paths = sorted(Path(input_dir).glob("*.png"))
+    total = len(image_paths)
+
+    logging.info(f"[CelebA] [→] Reemplazando fondo con negro para {total} imágenes.")
+    for index, image_path in enumerate(image_paths, start=1):
+        original = Image.open(image_path)
+        without_background = remove(original)
+
+        black_background = Image.new("RGB", without_background.size, (0, 0, 0))
+        black_background.paste(without_background, mask=without_background.split()[3])
+
+        black_background.save(Path(output_dir) / image_path.name)
+        logging.info(f"[CelebA] [✔] [{index}/{total}] Fondo reemplazado: {image_path.name}.")
+
+    logging.info(f"[CelebA] [✔] Reemplazo de fondo completado. Imágenes en {output_dir}.")

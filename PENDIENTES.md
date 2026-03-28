@@ -41,14 +41,15 @@ Los dos cambios a probar son: (a) pasar CelebA por el alineador de StyleGAN, y
 
 ### 1.2 Preparación de las imágenes
 
-- [ ] **[código]** Modificar el pipeline de CelebA para que las imágenes seleccionadas pasen
-  por `align_images.py` de StyleGAN (igual que BU-3DFE) antes de ser proyectadas. Validar
-  que las imágenes alineadas resultantes se vean bien (1024×1024, cara centrada).
-- [ ] **[código]** Implementar el reemplazo del fondo por negro sólido sobre las imágenes ya
-  alineadas. El fondo de las imágenes de CelebA alineadas no es uniforme, así que esto
-  requiere una máscara. Opciones: (a) usar un umbral simple si el fondo queda bastante
-  uniforme después de alinear, o (b) usar segmentación con un modelo liviano como
-  `rembg` o similar.
+- [x] **[código]** Modificar el pipeline de CelebA para que las imágenes seleccionadas pasen
+  por `align_images.py` de StyleGAN (igual que BU-3DFE) antes de ser proyectadas.
+  → Implementado en `celeba_helpers.py` (`align_celeba_candidates`) y `testing.py`.
+  Fix adicional en `stylegan2encoder/align_images.py` para aceptar `.jpg`.
+- [x] **[código]** Implementar el reemplazo del fondo por negro sólido sobre las imágenes ya
+  alineadas usando `rembg`. El flag `--black-bg` en el modo `test` activa este paso y
+  guarda los resultados en carpetas separadas para comparación.
+  → Implementado en `celeba_helpers.py` (`replace_background_with_black`), `testing.py`
+  y `argument_parsing.py` (`--black-bg`).
 - [ ] **[manual]** Verificar visualmente un lote de imágenes preparadas (alineadas + fondo
   negro) antes de seguir con la proyección.
 
@@ -157,5 +158,5 @@ lo que simplifica el augmentation de fondo (no hay que segmentar la cara).
   podría afectar el resultado — consultar con el director antes de incluirlo).
 - [ ] Decidir si se van a combinar las tres augmentations o probarlas por separado para
   entender cuál aporta más.
-- [ ] Decidir cómo hacer la máscara de cara para el reemplazo de fondo en CelebA (umbral
-  simple vs. modelo de segmentación). Evaluar `rembg` como opción liviana.
+- [x] Decidir cómo hacer la máscara de cara para el reemplazo de fondo en CelebA → **`rembg`
+  con el flag `--black-bg`**. Instalado en el entorno `stylegan` de la compu remota.

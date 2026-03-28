@@ -83,6 +83,12 @@ def main():
         default=False,
         help='Ejecuta solo las pruebas de CelebA, omitiendo el subset de diversidad.'
     )
+    parser_test.add_argument(
+        '--black-bg',
+        action='store_true',
+        default=False,
+        help='Reemplaza el fondo de las imágenes alineadas con negro antes de proyectar.'
+    )
 
     # 3. Análisis de Argumentos y Uso
     args = parser.parse_args()
@@ -121,7 +127,7 @@ def main():
         
     elif args.mode == 'test':
         logging.info("✅ Ejecutando pruebas...")
-        execute_tests(celeba_only=args.celeba_only)
+        execute_tests(celeba_only=args.celeba_only, black_bg=args.black_bg)
         logging.info("✅ Finalizó ejecución de pruebas.")
         pass
 
