@@ -72,14 +72,7 @@ def project_selected_celeba_images_from_df(
         logging.info(f"[CelebA] [→] [{index}/{total}] Proyectando {file_name}.")
         logging.info(f"[CelebA] Comando: \n{' '.join(command)}")
 
-        result = subprocess.run(command, check=False, stderr=subprocess.PIPE)
-        if result.returncode != 0:
-            docker_error = result.stderr.decode(errors="replace").strip()
-            logging.error(
-                f"[CelebA] [✘] [{index}/{total}] Docker falló (exit {result.returncode}) "
-                f"para {file_name}.\nError de Docker:\n{docker_error}"
-            )
-            raise subprocess.CalledProcessError(result.returncode, command)
+        subprocess.run(command, check=True)
         logging.info(f"[CelebA] [✔] [{index}/{total}] Proyección de {file_name} finalizada.")
 
     logging.info(f"[CelebA] [✔] Proyección completa para {len(df)} imágenes de CelebA seleccionadas.")
