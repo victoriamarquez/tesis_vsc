@@ -59,21 +59,21 @@ def project_selected_celeba_images_from_df(
         "--save-video=False"
     ]
 
-    # Iterar por imágenes en el dataframe
-    for file_name in df["file_name"]:
-        target_path = os.path.join(base_input_docker, file_name)    # dentro del contenedor
-        outdir_path = base_output_docker                            # dentro del contenedor
+    total = len(df)
+    for index, file_name in enumerate(df["file_name"], start=1):
+        target_path = os.path.join(base_input_docker, file_name)
+        outdir_path = base_output_docker
 
         command = command_base + [
             f"--target={target_path}",
             f"--outdir={outdir_path}"
         ]
 
-        logging.info(f"[CelebA] [→] Proyectando {file_name}.")
+        logging.info(f"[CelebA] [→] [{index}/{total}] Proyectando {file_name}.")
         logging.debug(f"[CelebA] Comando: \n{' '.join(command)}")
 
         subprocess.run(command, check=True)
-        logging.info(f"[CelebA] [✔] Proyección de {file_name} finalizada.")
+        logging.info(f"[CelebA] [✔] [{index}/{total}] Proyección de {file_name} finalizada.")
 
     logging.info(f"[CelebA] [✔] Proyección completa para {len(df)} imágenes de CelebA seleccionadas.")
 
@@ -155,12 +155,12 @@ def process_emotions_celeba(
     if max_imagenes is not None:
         npz_paths = npz_paths[:max_imagenes]
 
-    for npz_path in npz_paths:
+    total = len(npz_paths)
+    for index, npz_path in enumerate(npz_paths, start=1):
         for emotion, vector in emotion_vectors.items():
             multiplicador = multiplicadores.get(emotion, 1.0)
 
-
-            logging.debug(f"[CelebA] Llamando modify_latent_with_emotion con parámetros: \n npz_path={npz_path},\n emotion={emotion}, \n emotion_vectors={emotion_vectors},\n multiplier={multiplicador}")
+            logging.debug(f"[CelebA] [{index}/{total}] Llamando modify_latent_with_emotion con parámetros: \n npz_path={npz_path},\n emotion={emotion}, \n emotion_vectors={emotion_vectors},\n multiplier={multiplicador}")
             # Generar nuevo vector y archivo npz
             nuevo_npz = modify_latent_with_emotion(
                 npz_path=npz_path,
