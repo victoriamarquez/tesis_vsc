@@ -9,7 +9,6 @@
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 
 set -e
-set -x
 
 # Wrapper script for setting up `docker run` to properly
 # cache downloaded files, custom extension builds and
@@ -37,7 +36,7 @@ rest=$@
 
 IMAGE="${IMAGE:-sg2ada:latest}"
 
-CONTAINER_ID=$(docker inspect --format="{{.Id}}" ${IMAGE} 2> /dev/null)
+CONTAINER_ID=$(docker image inspect --format="{{.Id}}" ${IMAGE} 2> /dev/null)
 if [[ "${CONTAINER_ID}" ]]; then
     docker run --shm-size=6g --gpus all -it --rm -v `pwd`:/scratch --user $(id -u):$(id -g) \
         --workdir=/scratch -e HOME=/scratch $IMAGE $@
