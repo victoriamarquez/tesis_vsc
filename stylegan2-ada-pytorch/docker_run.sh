@@ -9,6 +9,7 @@
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 
 set -e
+set -x
 
 # Wrapper script for setting up `docker run` to properly
 # cache downloaded files, custom extension builds and
